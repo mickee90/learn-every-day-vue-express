@@ -4,8 +4,12 @@ require("dotenv").config();
 
 const app = express();
 
+const passport = require("passport");
+require("./config/passport")(passport);
+
 const apiHeaders = require("./middlewares/apiHeaders");
 const errorHandling = require("./middlewares/errorHandling");
+
 const postRoutes = require("./routes/post");
 const userRoutes = require("./routes/user");
 const authRoutes = require("./routes/auth");
@@ -18,8 +22,16 @@ app.use(express.urlencoded({ extended: false }));
 // Allow headers for the API calls
 app.use(apiHeaders);
 
-app.use("/api/v1/posts", postRoutes);
-app.use("/api/v1/users", userRoutes);
+app.use(
+  "/api/v1/posts",
+  passport.authenticate("jwt", { session: false }),
+  postRoutes
+);
+app.use(
+  "/api/v1/users",
+  passport.authenticate("jwt", { session: false }),
+  userRoutes
+);
 app.use("/api/v1", authRoutes);
 
 app.use(errorHandling);

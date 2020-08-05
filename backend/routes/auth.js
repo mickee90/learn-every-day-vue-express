@@ -22,13 +22,13 @@ userRoutes.post("/login", async function (req, res, next) {
   });
 
   if (!user) {
-    res
+    return res
       .status(401)
       .json({ success: false, message: "The user could not be found" });
   }
 
   if (!passwordUtils.validatePassword(req.body.password, user.password)) {
-    res
+    return res
       .status(401)
       .json({ success: false, message: "You entered the wrong password" });
   } else {
