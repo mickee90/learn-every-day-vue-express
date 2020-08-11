@@ -16,20 +16,7 @@ exports.getPosts = async (req, res, next) => {
   }
 };
 
-// TODO: Validate, trim
 exports.createPost = (req, res, next) => {
-  if (!req.user.id) {
-    return res.status(400).json({ message: "Something went wrong" });
-  }
-
-  if (!req.body.title) {
-    return res.status(400).json({ message: "The title is required" });
-  }
-
-  if (!req.body.content) {
-    return res.status(400).json({ message: "The content is required" });
-  }
-
   const newPost = models.Posts.build({
     user_id: req.user.id,
     status: req.body.status || 0,
@@ -47,25 +34,8 @@ exports.createPost = (req, res, next) => {
     .catch((err) => next(err));
 };
 
-// TODO: Validate, trim
 exports.editPost = async (req, res, next) => {
   const postId = req.params.postId;
-
-  if (!postId) {
-    return res.status(400).json({ message: "Something went wrong" });
-  }
-
-  if (!req.user.id) {
-    return res.status(400).json({ message: "Something went wrong" });
-  }
-
-  if (!req.body.title) {
-    return res.status(400).json({ message: "The title is required" });
-  }
-
-  if (!req.body.content) {
-    return res.status(400).json({ message: "The content is required" });
-  }
 
   try {
     const post = await models.Posts.findByPk(postId);
@@ -106,10 +76,6 @@ exports.editPost = async (req, res, next) => {
 
 exports.deletePost = async (req, res, next) => {
   const postId = req.params.postId;
-
-  if (!req.user.id) {
-    return res.status(400).json({ message: "Something went wrong" });
-  }
 
   try {
     const post = await models.Posts.findByPk(postId);

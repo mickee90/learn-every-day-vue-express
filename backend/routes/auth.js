@@ -1,18 +1,8 @@
-// const userController = require("../controllers/user");
-
 const userRoutes = require("express").Router();
 const passwordUtils = require("../utils/passwordUtils");
 const models = require("../models");
-const passport = require("passport");
-require("../config/passport")(passport);
 
-userRoutes.get(
-  "/protected",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    res.status(200).json({ message: "Yey", success: true });
-  }
-);
+const { validateRegisterUser } = require("../validators/user");
 
 userRoutes.post("/login", async function (req, res, next) {
   const user = await models.Users.findOne({
@@ -41,30 +31,11 @@ userRoutes.post("/login", async function (req, res, next) {
   }
 });
 
-userRoutes.post("/register", async function (req, res, next) {
-  if (!req.body.username) {
-    return res.status(400).json({ message: "Username is required" });
-  }
-  if (!req.body.password) {
-    return res.status(400).json({ message: "Password is required" });
-  }
-  if (!req.body.first_name) {
-    return res.status(400).json({ message: "First name is required" });
-  }
-  if (!req.body.last_name) {
-    return res.status(400).json({ message: "Last name is required" });
-  }
-
-  const usernameExists = await models.Users.findOne({
-    where: {
-      username: req.body.username,
-    },
-  });
-
-  if (usernameExists) {
-    return res.status(400).json({ message: "Username already exists" });
-  }
-
+userRoutes.post("/register", validateRegisterUser, async function (
+  req,
+  res,
+  next
+) {
   const newUser = models.Users.build({
     username: req.body.username,
     email: req.body.username,

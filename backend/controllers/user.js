@@ -2,37 +2,12 @@ const models = require("../models");
 const passwordUtils = require("../utils/passwordUtils");
 
 exports.getUser = async (req, res, next) => {
-  if (!req.user.id) {
-    return res.status(400).json({ message: "Something went wrong" });
-  }
-
   const user = apiUserObject(req.user);
 
   res.status(200).json({ message: "Get user", user });
 };
 
-// TODO: Validate, username check, trim
 exports.editUser = async (req, res, next) => {
-  if (!req.user.id) {
-    return res.status(400).json({ message: "Something went wrong" });
-  }
-
-  if (!req.body.username) {
-    return res.status(400).json({ message: "Username is required" });
-  }
-
-  if (!req.body.first_name) {
-    return res.status(400).json({ message: "First name is required" });
-  }
-
-  if (!req.body.last_name) {
-    return res.status(400).json({ message: "Last name is required" });
-  }
-
-  if (!req.body.email) {
-    return res.status(400).json({ message: "Email is required" });
-  }
-
   try {
     const user = await models.Users.findByPk(req.user.id);
 
