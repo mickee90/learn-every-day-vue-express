@@ -15,10 +15,10 @@ const validateUserValues = [
     .isEmail()
     .normalizeEmail()
     .bail()
-    .custom((value) => {
+    .custom((value, { req }) => {
       return models.Users.findOne({ where: { username: value } }).then(
         (user) => {
-          if (user) {
+          if (user && user.id !== req.user.id) {
             return Promise.reject("Username does already exists");
           }
         }
@@ -62,6 +62,31 @@ const validateUserValues = [
     .bail(),
 ];
 
+const validatePassword = [
+  check("password")
+    .trim()
+    .escape()
+    .not()
+    .isEmpty()
+    .withMessage("Password is required!")
+    .bail()
+    .isLength({ min: 3 })
+    .withMessage("Minimum of 3 characters!")
+    .bail()
+    .isLength({ max: 255 })
+    .withMessage("Maximum of 255 characters!")
+    .bail(),
+  check("confirm_password")
+    .custom((value, { req }) => {
+      if (value !== req.body.password) {
+        throw new Error("Password confirmation does not match password");
+      }
+
+      return true;
+    })
+    .bail(),
+];
+
 exports.validateEditUser = [
   ...validateUserValues,
   (req, res, next) => {
@@ -81,19 +106,7 @@ exports.validateEditUser = [
 
 exports.validateRegisterUser = [
   ...validateUserValues,
-  check("password")
-    .trim()
-    .escape()
-    .not()
-    .isEmpty()
-    .withMessage("Password is required!")
-    .bail()
-    .isLength({ min: 3 })
-    .withMessage("Minimun of 3 characters!")
-    .bail()
-    .isLength({ max: 255 })
-    .withMessage("Maximum of 255 characters!")
-    .bail(),
+  ...validatePassword,
   (req, res, next) => {
     const errors = validationResult(req);
 
@@ -106,28 +119,7 @@ exports.validateRegisterUser = [
 ];
 
 exports.validateChangePassword = [
-  check("password")
-    .trim()
-    .escape()
-    .not()
-    .isEmpty()
-    .withMessage("Password is required!")
-    .bail()
-    .isLength({ min: 3 })
-    .withMessage("Minimun of 3 characters!")
-    .bail()
-    .isLength({ max: 255 })
-    .withMessage("Maximum of 255 characters!")
-    .bail(),
-  check("confirm_password")
-    .custom((value, { req }) => {
-      if (value !== req.body.password) {
-        throw new Error("Password confirmation does not match password");
-      }
-
-      return true;
-    })
-    .bail(),
+  ...validatePassword,
   (req, res, next) => {
     const errors = validationResult(req);
 
