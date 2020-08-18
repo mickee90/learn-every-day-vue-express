@@ -1,3 +1,16 @@
+export interface Post {
+  id: string;
+  user_id: string;
+  status: number;
+  title: string;
+  ingress: string;
+  content: string;
+  deleted: boolean;
+  publish_date: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 module.exports = function (sequelize, DataTypes) {
   return sequelize.define(
     "Posts",

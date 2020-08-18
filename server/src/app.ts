@@ -1,7 +1,11 @@
+// Simulates it's a module and will remove the error of colliding imports in other files (e.g modals)
+export {};
+
 const express = require("express");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const cors = require("cors");
+import { sequelize } from "./models/sequelize";
 
 // Enables env variables from .env
 require("dotenv").config();
@@ -18,7 +22,6 @@ const notFound = require("./middlewares/notFound");
 const postRoutes = require("./routes/post");
 const userRoutes = require("./routes/user");
 const authRoutes = require("./routes/auth");
-const models = require("./models");
 
 // HTTP request logger middleware
 app.use(morgan("common"));
@@ -54,11 +57,8 @@ app.use(errorHandling);
 
 const port = process.env.PORT || 3000;
 
-return models.sequelize
-  .sync()
-  .then((result) => {
-    app.listen(port);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+(async () => {
+  await sequelize.sync({ force: true });
+
+  app.listen(port, () => console.info(`Server running on port ${port}`));
+})();

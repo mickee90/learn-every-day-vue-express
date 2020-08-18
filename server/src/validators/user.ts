@@ -1,5 +1,8 @@
+export {};
+
 const { check, validationResult } = require("express-validator");
-const models = require("../models");
+import { User } from "../models/User";
+import { Request, Response, NextFunction } from "express";
 
 const validateUserValues = [
   check("username")
@@ -16,13 +19,11 @@ const validateUserValues = [
     .normalizeEmail()
     .bail()
     .custom((value, { req }) => {
-      return models.Users.findOne({ where: { username: value } }).then(
-        (user) => {
-          if (user && user.id !== req.user.id) {
-            return Promise.reject("Username does already exists");
-          }
+      return User.findOne({ where: { username: value } }).then((user) => {
+        if (user && user.id !== req.user.id) {
+          return Promise.reject("Username does already exists");
         }
-      );
+      });
     })
     .bail(),
   check("first_name")
@@ -53,7 +54,7 @@ const validateUserValues = [
     .normalizeEmail()
     .bail()
     .custom((value) => {
-      return models.Users.findOne({ where: { email: value } }).then((user) => {
+      return User.findOne({ where: { email: value } }).then((user) => {
         if (user) {
           return Promise.reject("Email does already exists");
         }
@@ -89,7 +90,7 @@ const validatePassword = [
 
 exports.validateEditUser = [
   ...validateUserValues,
-  (req, res, next) => {
+  (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
 
     if (!req.user.id) {
@@ -107,7 +108,7 @@ exports.validateEditUser = [
 exports.validateRegisterUser = [
   ...validateUserValues,
   ...validatePassword,
-  (req, res, next) => {
+  (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -120,7 +121,7 @@ exports.validateRegisterUser = [
 
 exports.validateChangePassword = [
   ...validatePassword,
-  (req, res, next) => {
+  (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
 
     if (!req.user.id) {

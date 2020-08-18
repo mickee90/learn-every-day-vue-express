@@ -1,10 +1,12 @@
+export {};
+
 const bcrypt = require("bcryptjs");
 const jsonwebtoken = require("jsonwebtoken");
 const path = require("path");
 const fs = require("fs");
 
 // Go up one directory, then look for file name
-const pathToKey = path.join(__dirname, "..", "id_rsa_priv.pem");
+const pathToKey = path.join(__dirname, "../../", "id_rsa_priv.pem");
 
 // The verifying public key
 const PRIV_KEY = fs.readFileSync(pathToKey, "utf8");

@@ -1,15 +1,16 @@
-const models = require("../models");
+import { User } from "../models/User";
 const passwordUtils = require("../utils/passwordUtils");
+import { Request, Response } from "express";
 
-exports.getUser = async (req, res, next) => {
+exports.getUser = async (req: Request, res: Response) => {
   const user = apiUserObject(req.user);
 
   res.status(200).json({ message: "Get user", user });
 };
 
-exports.editUser = async (req, res, next) => {
+exports.editUser = async (req: Request, res: Response, next) => {
   try {
-    const user = await models.Users.findByPk(req.user.id);
+    const user: User = await User.findByPk(req.user.id);
 
     if (!user) {
       const error = new Error("The user cannot be found");
@@ -44,7 +45,7 @@ exports.editUser = async (req, res, next) => {
 };
 
 // TODO: Validate, password check, trim
-exports.editPassword = async (req, res, next) => {
+exports.editPassword = async (req: Request, res: Response, next) => {
   if (!req.user.id) {
     return res.status(400).json({ message: "Something went wrong" });
   }
@@ -68,7 +69,7 @@ exports.editPassword = async (req, res, next) => {
   }
 
   try {
-    const user = await models.Users.findByPk(req.user.id);
+    const user: User = await User.findByPk(req.user.id);
 
     if (!user) {
       const error = new Error("The user cannot be found");

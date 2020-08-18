@@ -2,10 +2,10 @@ const JwtStrategy = require("passport-jwt").Strategy;
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 const fs = require("fs");
 const path = require("path");
-const models = require("../models");
+import { User } from "../models/User";
 
 // Go up one directory, then look for file name
-const pathToKey = path.join(__dirname, "..", "id_rsa_pub.pem");
+const pathToKey = path.join(__dirname, "../../", "id_rsa_pub.pem");
 
 // The verifying public key
 const PUB_KEY = fs.readFileSync(pathToKey, "utf8");
@@ -25,7 +25,7 @@ module.exports = (passport) => {
       // Since we are here, the JWT is valid!
 
       // We will assign the `sub` property on the JWT to the database ID of user
-      const user = await models.Users.findOne({
+      const user: User = await User.findOne({
         where: { id: jwt_payload.sub },
       });
 

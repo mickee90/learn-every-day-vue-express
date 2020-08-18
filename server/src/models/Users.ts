@@ -1,3 +1,22 @@
+export interface User {
+  id: string;
+  user_type_id: number;
+  username: string;
+  password: string;
+  first_name: string;
+  last_name: string;
+  address: string;
+  zip_code: string;
+  city: string;
+  email: string;
+  phone: string;
+  disabled: boolean;
+  banned: boolean;
+  country_id: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 module.exports = function (sequelize, DataTypes) {
   return sequelize.define(
     "Users",

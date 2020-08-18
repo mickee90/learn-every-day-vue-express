@@ -1,11 +1,12 @@
 const userRoutes = require("express").Router();
 const passwordUtils = require("../utils/passwordUtils");
-const models = require("../models");
+import { User } from "../models/User";
+import { Request, Response, NextFunction } from "express";
 
 const { validateRegisterUser } = require("../validators/user");
 
-userRoutes.post("/login", async function (req, res, next) {
-  const user = await models.Users.findOne({
+userRoutes.post("/login", async function (req: Request, res: Response) {
+  const user: User = await User.findOne({
     where: {
       username: req.body.username,
     },
@@ -32,11 +33,11 @@ userRoutes.post("/login", async function (req, res, next) {
 });
 
 userRoutes.post("/register", validateRegisterUser, async function (
-  req,
-  res,
-  next
+  req: Request,
+  res: Response,
+  next: NextFunction
 ) {
-  const newUser = models.Users.build({
+  const buildUser: User = User.build({
     username: req.body.username,
     email: req.body.username,
     password: passwordUtils.generateHash(req.body.password),
@@ -44,15 +45,15 @@ userRoutes.post("/register", validateRegisterUser, async function (
     last_name: req.body.last_name,
   });
 
-  return newUser
-    .save()
-    .then((user) => {
-      res.json({ success: true, user });
-    })
-    .catch((err) => next(err));
+  try {
+    const newUser = await buildUser.save();
+    return res.json({ success: true, user: newUser });
+  } catch (error) {
+    next(error);
+  }
 });
 
-userRoutes.post("/logout", (req, res, next) => {
+userRoutes.post("/logout", (req: Request, res: Response) => {
   req.logout();
   res.redirect("/");
 });

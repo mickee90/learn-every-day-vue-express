@@ -1,4 +1,6 @@
-module.exports = (error, req, res, next) => {
+import { Request, Response, NextFunction } from "express";
+
+module.exports = (error, req: Request, res: Response, next: NextFunction) => {
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
 
   res.status(statusCode).json({

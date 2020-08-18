@@ -1,12 +1,13 @@
-const models = require("../models");
+import { Post, Posts } from "../models/Post";
+import { Request, Response, NextFunction } from "express";
 
-exports.getPosts = async (req, res, next) => {
+exports.getPosts = async (req: Request, res: Response, next: NextFunction) => {
   if (!req.user.id) {
     return res.status(400).json({ message: "Something went wrong" });
   }
 
   try {
-    const posts = await models.Posts.findAll({
+    const posts: typeof Posts = await Post.findAll({
       where: { user_id: req.user.id },
     });
 
@@ -16,8 +17,8 @@ exports.getPosts = async (req, res, next) => {
   }
 };
 
-exports.createPost = (req, res, next) => {
-  const newPost = models.Posts.build({
+exports.createPost = (req: Request, res: Response, next: NextFunction) => {
+  const newPost = Post.build({
     user_id: req.user.id,
     status: req.body.status || 0,
     title: req.body.title,
@@ -34,11 +35,11 @@ exports.createPost = (req, res, next) => {
     .catch((err) => next(err));
 };
 
-exports.editPost = async (req, res, next) => {
+exports.editPost = async (req: Request, res: Response, next: NextFunction) => {
   const postId = req.params.postId;
 
   try {
-    const post = await models.Posts.findByPk(postId);
+    const post: Post = await Post.findByPk(postId);
 
     if (!post) {
       const error = new Error("The post cannot be found");
@@ -74,11 +75,11 @@ exports.editPost = async (req, res, next) => {
   }
 };
 
-exports.deletePost = async (req, res, next) => {
+exports.deletePost = async (req, res, next: NextFunction) => {
   const postId = req.params.postId;
 
   try {
-    const post = await models.Posts.findByPk(postId);
+    const post: Post = await Post.findByPk(postId);
 
     if (!post) {
       const error = new Error("The post cannot be found");
@@ -92,7 +93,7 @@ exports.deletePost = async (req, res, next) => {
       throw error;
     }
 
-    const deletedPost = await models.Posts.destroy({
+    const deletedPost = await Post.destroy({
       where: { id: postId },
     });
 
