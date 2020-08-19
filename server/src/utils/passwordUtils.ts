@@ -15,8 +15,8 @@ function generateHash(password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 }
 
-function validatePassword(password, hashedPassword) {
-  return bcrypt.compare(password, hashedPassword);
+async function validatePassword(password, hashedPassword) {
+  return await bcrypt.compare(password, hashedPassword);
 }
 
 /**
