@@ -48,8 +48,11 @@ Post.init(
       allowNull: true,
     },
     content: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.BLOB,
       allowNull: false,
+      get() {
+        return this.getDataValue("content").toString("utf8"); // or whatever encoding is right
+      },
     },
     deleted: {
       type: DataTypes.INTEGER.UNSIGNED,

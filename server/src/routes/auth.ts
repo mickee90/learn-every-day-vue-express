@@ -23,12 +23,24 @@ userRoutes.post("/login", async function (req: Request, res: Response) {
       .status(401)
       .json({ success: false, message: "You entered the wrong password" });
   } else {
-    const tokenObject = passwordUtils.issueJWT(user);
-    res.status(200).json({
-      success: true,
-      token: tokenObject.token,
-      expiresIn: tokenObject.expires,
-    });
+    const tokenObject = passwordUtils.issueJWT(user, false);
+
+    res
+      .status(200)
+      .cookie("jwt", tokenObject.token, { httpOnly: true })
+      .json({
+        success: true,
+        user: {
+          username: user.username,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email,
+          address: user.address,
+          zip_code: user.zip_code,
+          city: user.city,
+          phone: user.phone,
+        },
+      });
   }
 });
 
@@ -53,9 +65,11 @@ userRoutes.post("/register", validateRegisterUser, async function (
   }
 });
 
-userRoutes.post("/logout", (req: Request, res: Response) => {
-  req.logout();
-  res.redirect("/");
+userRoutes.post("/logout", async (req: Request, res: Response) => {
+  await req.logout();
+  res.clearCookie("jwt");
+
+  res.sendStatus(200);
 });
 
 module.exports = userRoutes;

@@ -10,9 +10,28 @@ const pathToKey = path.join(__dirname, "../../", "id_rsa_pub.pem");
 // The verifying public key
 const PUB_KEY = fs.readFileSync(pathToKey, "utf8");
 
+var cookieExtractor = function (req) {
+  if (!req.headers.cookie) {
+    return null;
+  }
+
+  const rawCookies = req.headers.cookie.split("; ");
+
+  const parsedCookies = {};
+  rawCookies.forEach((rawCookie) => {
+    const parsedCookie = rawCookie.split("=");
+    parsedCookies[parsedCookie[0]] = parsedCookie[1];
+  });
+
+  var token = parsedCookies["jwt"] ? parsedCookies["jwt"] : null;
+
+  return token;
+};
+
 // At a minimum, you must pass the `jwtFromRequest` and `secretOrKey` properties
 const options = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  // jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  jwtFromRequest: cookieExtractor,
   secretOrKey: PUB_KEY,
   algorithms: ["RS256"],
 };

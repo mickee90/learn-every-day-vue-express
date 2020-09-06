@@ -33,7 +33,7 @@ app.use(helmet());
 // Some of the defaults is:
 // origin: *
 // methods: GET,HEAD,PUT,PATCH,POST,DELETE
-app.use(cors());
+app.use(cors({ credentials: true, origin: "http://localhost:8080" }));
 
 // Transform incoming request data to json
 app.use(express.json());

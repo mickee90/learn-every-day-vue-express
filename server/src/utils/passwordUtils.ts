@@ -22,7 +22,7 @@ function validatePassword(password, hashedPassword) {
 /**
  * @param {*} user - The user object.  We need this to set the JWT `sub` payload property to the MongoDB user ID
  */
-function issueJWT(user) {
+function issueJWT(user, withBearer = true) {
   const _id = user.id;
   const expiresIn = "1d";
 
@@ -37,7 +37,7 @@ function issueJWT(user) {
   });
 
   return {
-    token: "Bearer " + signedToken,
+    token: withBearer ? "Bearer " + signedToken : signedToken,
     expires: expiresIn,
   };
 }
