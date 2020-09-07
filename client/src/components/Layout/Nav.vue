@@ -18,11 +18,11 @@
       <div class="nav">
         <ul class="navbar-nav ml-auto text-right text-xl">
           <li v-if="isLoggedIn" class="pt-6 px-6">
-            <router-link :to="{ name: 'Profile' }" class="menu-item ml-3">My profile</router-link>
+            <router-link :to="{ name: 'ProfileEdit' }" class="menu-item ml-3">My profile</router-link>
           </li>
-          <!-- <li v-if="!isLoggedIn" class="pt-6 px-6">
+          <li v-if="!isLoggedIn" class="pt-6 px-6">
             <router-link :to="{ name: 'Login' }" class="menu-item ml-3">Login</router-link>
-          </li>-->
+          </li>
           <li v-if="!isLoggedIn" class="pt-6 px-6">
             <router-link :to="{ name: 'Register' }" class="menu-item ml-3">Register</router-link>
           </li>
