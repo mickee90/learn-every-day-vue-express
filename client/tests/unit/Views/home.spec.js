@@ -1,6 +1,11 @@
-import { shallowMount } from "@vue/test-utils";
+import { shallowMount, mount, createLocalVue } from "@vue/test-utils";
+import VueRouter from "vue-router";
 
 import Home from "@/views/Home.vue";
+import router from "@/router";
+
+const localVue = createLocalVue();
+localVue.use(VueRouter);
 
 describe("Home.vue", () => {
   it("has welcome text as h1", () => {
@@ -10,20 +15,30 @@ describe("Home.vue", () => {
   });
 
   it("includes a login link", async () => {
-    const wrapper = shallowMount(Home, { stubs: ["router-link"] });
+    const wrapper = mount(Home, { router });
 
     const loginBtn = wrapper.find("#loginBtn");
 
-    expect(loginBtn.attributes("to")).toEqual("[object Object]");
     expect(loginBtn.text()).toEqual("Login");
+
+    await loginBtn.trigger("click");
+
+    await wrapper.vm.$nextTick();
+
+    expect(wrapper.vm.$route.name).toBe("Login");
   });
 
   it("includes a register link", async () => {
-    const wrapper = shallowMount(Home, { stubs: ["router-link"] });
+    const wrapper = mount(Home, { router });
 
-    const loginBtn = wrapper.find("#registerBtn");
+    const registerBtn = wrapper.find("#registerBtn");
 
-    expect(loginBtn.attributes("to")).toEqual("[object Object]");
-    expect(loginBtn.text()).toEqual("Register");
+    expect(registerBtn.text()).toEqual("Register");
+
+    await registerBtn.trigger("click");
+
+    await wrapper.vm.$nextTick();
+
+    expect(wrapper.vm.$route.name).toBe("Register");
   });
 });
