@@ -90,6 +90,19 @@ const actions = {
 
     router.push({ name: "Home" });
   },
+  async updateUser({ commit }, payload) {
+    const response = await axios.put("http://localhost:3000/api/v1/users", payload, {
+      withCredentials: true,
+      "Content-Type": "application/json"
+    });
+
+    // @TODO error handling
+    if (!response) return;
+
+    commit("setUser", response.data.user);
+
+    router.push({ name: "Posts" });
+  },
   async register() {}
 };
 

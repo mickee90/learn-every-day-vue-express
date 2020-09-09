@@ -53,9 +53,9 @@ const validateUserValues = [
     .isEmail()
     .normalizeEmail()
     .bail()
-    .custom((value) => {
+    .custom((value, { req }) => {
       return User.findOne({ where: { email: value } }).then((user) => {
-        if (user) {
+        if (user && user.id !== req.user.id) {
           return Promise.reject("Email does already exists");
         }
       });

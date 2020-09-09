@@ -5,7 +5,7 @@ import { Request, Response } from "express";
 exports.getUser = async (req: Request, res: Response) => {
   const user = apiUserObject(req.user);
 
-  res.status(200).json({ message: "Get user", user });
+  res.status(200).json({ user });
 };
 
 exports.editUser = async (req: Request, res: Response, next) => {
@@ -36,9 +36,7 @@ exports.editUser = async (req: Request, res: Response, next) => {
       throw error;
     }
 
-    res
-      .status(200)
-      .json({ message: "User is updated", user: apiUserObject(user) });
+    res.status(200).json({ user: apiUserObject(user) });
   } catch (error) {
     next(error);
   }
@@ -87,9 +85,7 @@ exports.editPassword = async (req: Request, res: Response, next) => {
       throw error;
     }
 
-    res
-      .status(200)
-      .json({ message: "User is updated", user: apiUserObject(user) });
+    res.status(200).json({ user: apiUserObject(user) });
   } catch (error) {
     next(error);
   }
