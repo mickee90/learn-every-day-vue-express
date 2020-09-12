@@ -4,65 +4,46 @@
       <div class="bg-white m-auto max-w-lg p-16 rounded-md w-full">
         <div class="flex flex-wrap -mx-3 mb-6">
           <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            <label
-              for="grid-first-name"
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            >
-              First name
-              <span class="required">*</span>
-            </label>
-            <input
-              id="grid-first-name"
-              type="text"
+            <BaseLabel id="first_name" required>First name</BaseLabel>
+            <BaseInput
+              id="first_name"
               placeholder="First name"
-              v-model="firstName"
-              :class="{ 'border-red-500': $v.firstName.$error }"
-              @blur="$v.firstName.$touch()"
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              v-model="first_name"
+              :class="{ 'border-red-500': $v.first_name.$error }"
+              @blur="$v.first_name.$touch()"
             />
-            <p v-if="$v.firstName.$error" class="text-red-500 text-xs italic">
+            <p v-if="$v.first_name.$error" class="text-red-500 text-xs italic">
               Enter your first name
             </p>
           </div>
           <div class="w-full md:w-1/2 px-3">
-            <label
-              for="grid-last-name"
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            >
+            <BaseLabel id="last_name" required>
               Last name
-              <span class="required">*</span>
-            </label>
-            <input
-              id="grid-last-name"
-              type="text"
+            </BaseLabel>
+            <BaseInput
+              id="last_name"
               placeholder="Last name"
-              v-model="lastName"
-              :class="{ 'border-red-500': $v.lastName.$error }"
-              @blur="$v.lastName.$touch()"
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              v-model="last_name"
+              :class="{ 'border-red-500': $v.last_name.$error }"
+              @blur="$v.last_name.$touch()"
             />
-            <p v-if="$v.lastName.$error" class="text-red-500 text-xs italic">
+            <p v-if="$v.last_name.$error" class="text-red-500 text-xs italic">
               Enter your last name
             </p>
           </div>
         </div>
         <div class="flex flex-wrap -mx-3 mb-6">
           <div class="w-full px-3">
-            <label
-              for="grid-username"
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            >
+            <BaseLabel id="username" required>
               Username (email)
-              <span class="required">*</span>
-            </label>
-            <input
-              id="grid-username"
+            </BaseLabel>
+            <BaseInput
+              id="username"
               type="email"
               placeholder="Username"
               v-model="username"
               :class="{ 'border-red-500': $v.username.$error }"
               @blur="$v.username.$touch()"
-              class="appearance-none block w-full bg-gray-200 text-gray-700 mb-3 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             />
             <p v-if="$v.username.$error" class="text-red-500 text-xs italic">
               Enter a username
@@ -74,21 +55,16 @@
         </div>
         <div class="flex flex-wrap -mx-3 mb-6">
           <div class="w-full px-3">
-            <label
-              for="grid-password"
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            >
+            <BaseLabel id="password" required>
               Password
-              <span class="required">*</span>
-            </label>
-            <input
-              id="grid-password"
+            </BaseLabel>
+            <BaseInput
+              id="password"
               type="password"
               placeholder="******************"
               v-model="password"
               :class="{ 'border-red-500': $v.password.$error }"
               @blur="$v.password.$touch()"
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             />
             <p v-if="$v.password.$error" class="text-red-500 text-xs italic">
               The password do not meet the requirements
@@ -100,23 +76,18 @@
         </div>
         <div class="flex flex-wrap -mx-3 mb-6">
           <div class="w-full px-3">
-            <label
-              for="grid-confirm-password"
-              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            >
+            <BaseLabel id="confirm_password" required>
               Confirm password
-              <span class="required">*</span>
-            </label>
-            <input
-              id="grid-confirm-password"
+            </BaseLabel>
+            <BaseInput
+              id="confirm_password"
               type="password"
               placeholder="******************"
-              v-model="confirmPassword"
-              :class="{ 'border-red-500': $v.confirmPassword.$error }"
-              @blur="$v.confirmPassword.$touch()"
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              v-model="confirm_password"
+              :class="{ 'border-red-500': $v.confirm_password.$error }"
+              @blur="$v.confirm_password.$touch()"
             />
-            <p v-if="$v.confirmPassword.$error" class="text-red-500 text-xs italic">
+            <p v-if="$v.confirm_password.$error" class="text-red-500 text-xs italic">
               The password do not meet the requirements
             </p>
           </div>
@@ -124,9 +95,7 @@
         <div class="flex justify-end items-center">
           <div class>
             <div class="relative">
-              <button class="btn btn-blue" @click="onRegister">
-                Register
-              </button>
+              <BaseButton @click="onRegister">Register</BaseButton>
             </div>
           </div>
         </div>
@@ -141,11 +110,11 @@ import { required, email, minLength, sameAs } from "vuelidate/lib/validators";
 export default {
   data() {
     return {
-      firstName: "",
-      lastName: "",
+      first_name: "",
+      last_name: "",
       username: "",
       password: "",
-      confirmPassword: ""
+      confirm_password: ""
     };
   },
   methods: {
@@ -156,17 +125,17 @@ export default {
 
       this.$store.dispatch("auth/register", {
         username: this.username,
-        firstName: this.firstName,
-        lastName: this.lastName,
+        first_name: this.first_name,
+        last_name: this.last_name,
         password: this.password
       });
     }
   },
   validations: {
-    firstName: {
+    first_name: {
       required
     },
-    lastName: {
+    last_name: {
       required
     },
     username: {
@@ -177,7 +146,7 @@ export default {
       required,
       minLen: minLength(6)
     },
-    confirmPassword: {
+    confirm_password: {
       sameAs: sameAs("password")
     }
   }
@@ -194,9 +163,5 @@ export default {
 input.invalid {
   border: 1px solid red;
   background-color: #ffc9aa;
-}
-
-span.required {
-  color: red;
 }
 </style>

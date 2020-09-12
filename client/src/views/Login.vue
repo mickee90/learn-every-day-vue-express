@@ -3,9 +3,10 @@
     <div class="w-full max-w-xs">
       <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="username">Username</label>
+          <BaseLabel id="username" required>Username</BaseLabel>
           <BaseInput
             id="username"
+            type="email"
             :class="{ 'border-red-500 mb-3': $v.username.$error }"
             required
             placeholder="Username"
@@ -16,7 +17,7 @@
           <p v-if="$v.username.$error" class="text-red-500 text-xs italic">Enter your username.</p>
         </div>
         <div class="mb-6">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="password">Password</label>
+          <BaseLabel id="password" required>Password</BaseLabel>
           <BaseInput
             id="password"
             type="password"
@@ -30,7 +31,7 @@
           <p v-if="$v.password.$error" class="text-red-500 text-xs italic">Enter your password.</p>
         </div>
         <div class="flex items-center justify-between">
-          <button type="submit" class="btn btn-blue" @click.prevent="onSubmit">Login</button>
+          <BaseButton type="submit" @click.prevent="onSubmit">Login</BaseButton>
           <!-- <a
             class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
             href="#"

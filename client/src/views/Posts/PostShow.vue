@@ -12,8 +12,10 @@
       <div class="text-md text-bold tracking-wide text-gray-800" v-text="post.content"></div>
     </div>
     <div class="mt-6 text-right border-t pt-3">
-      <router-link :to="{name: 'PostEdit', params: { id: post.id }}" class="btn btn-blue mr-3">Edit</router-link>
-      <button class="btn btn-red" @click="deletePost">Delete</button>
+      <router-link :to="{ name: 'PostEdit', params: { id: post.id } }" class="btn btn-blue mr-3"
+        >Edit</router-link
+      >
+      <BaseButton class="btn-red" @click="deletePost">Delete</BaseButton>
     </div>
   </div>
 </template>

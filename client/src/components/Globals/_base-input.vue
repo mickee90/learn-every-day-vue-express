@@ -1,3 +1,19 @@
+<template>
+  <input
+    :type="type"
+    class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+    v-bind="
+      $attrs
+      // https://vuejs.org/v2/guide/components-props.html#Disabling-Attribute-Inheritance
+    "
+    @input="$emit('update', $event.target.value)"
+    v-on="
+      $listeners
+      // https://vuejs.org/v2/guide/components-custom-events.html#Binding-Native-Events-to-Components
+    "
+  />
+</template>
+
 <script>
 export default {
   // Disable automatic attribute inheritance, so that $attrs are
@@ -22,22 +38,6 @@ export default {
   }
 };
 </script>
-
-<template>
-  <input
-    :type="type"
-    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-    v-bind="
-      $attrs
-      // https://vuejs.org/v2/guide/components-props.html#Disabling-Attribute-Inheritance
-    "
-    @input="$emit('update', $event.target.value)"
-    v-on="
-      $listeners
-      // https://vuejs.org/v2/guide/components-custom-events.html#Binding-Native-Events-to-Components
-    "
-  />
-</template>
 
 <style lang="scss" module>
 // @import "@design";

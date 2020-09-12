@@ -9,18 +9,14 @@
         <form id="ProfileEditForm" :key="resetFormKey" @submit.prevent="onSubmit">
           <div class="flex flex-wrap -mx-3 mb-6">
             <div class="w-full px-3">
-              <label
-                for="username"
-                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                >Username</label
-              >
-              <input
+              <BaseLabel id="username" required>Username</BaseLabel>
+              <BaseInput
                 id="username"
                 type="email"
                 placeholder="Username"
                 v-model="formData.username"
+                class="bg-gray-200 shadow-none"
                 :class="{ 'border-red-500 mb-3': $v.formData.username.$error }"
-                class="appearance-none block w-full bg-gray-200 text-gray-700 mb-3 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               />
               <p v-if="$v.formData.username.$error" class="text-red-500 text-xs italic">
                 Enter your username.
@@ -29,36 +25,26 @@
           </div>
           <div class="flex flex-wrap -mx-3 mb-6">
             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-              <label
-                for="first_name"
-                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                >First name</label
-              >
-              <input
+              <BaseLabel id="first_name" required>First name</BaseLabel>
+              <BaseInput
                 id="first_name"
-                type="text"
                 placeholder="First name"
                 v-model="formData.first_name"
+                class="bg-gray-200 shadow-none"
                 :class="{ 'border-red-500 mb-3': $v.formData.first_name.$error }"
-                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               />
               <p v-if="$v.formData.first_name.$error" class="text-red-500 text-xs italic">
                 Enter your first name.
               </p>
             </div>
             <div class="w-full md:w-1/2 px-3">
-              <label
-                for="last_name"
-                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                >Last name</label
-              >
-              <input
+              <BaseLabel id="last_name" required>Last name</BaseLabel>
+              <BaseInput
                 id="last_name"
-                type="text"
                 placeholder="Last name"
                 v-model="formData.last_name"
+                class="bg-gray-200 shadow-none"
                 :class="{ 'border-red-500 mb-3': $v.formData.last_name.$error }"
-                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               />
               <p v-if="$v.formData.last_name.$error" class="text-red-500 text-xs italic">
                 Enter your last name.
@@ -67,18 +53,14 @@
           </div>
           <div class="flex flex-wrap -mx-3 mb-6">
             <div class="w-full px-3">
-              <label
-                for="email"
-                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                >Email</label
-              >
-              <input
+              <BaseLabel id="email" required>Email</BaseLabel>
+              <BaseInput
                 id="email"
                 type="email"
                 placeholder="Email"
                 v-model="formData.email"
+                class="bg-gray-200 shadow-none"
                 :class="{ 'border-red-500 mb-3': $v.formData.email.$error }"
-                class="appearance-none block w-full bg-gray-200 text-gray-700 mb-3 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               />
               <p v-if="$v.formData.email.$error" class="text-red-500 text-xs italic">
                 Enter your email.
@@ -87,67 +69,49 @@
           </div>
           <div class="flex flex-wrap -mx-3 mb-6">
             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-              <label
-                for="city"
-                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                >City</label
-              >
-              <input
+              <BaseLabel id="city">City</BaseLabel>
+              <BaseInput
                 id="city"
-                type="text"
                 placeholder="city"
                 v-model="formData.city"
-                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                class="bg-gray-200 shadow-none"
               />
             </div>
             <div class="w-full md:w-1/2 px-3">
-              <label
-                for="address"
-                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                >Address</label
-              >
-              <input
+              <BaseLabel id="address">Address</BaseLabel>
+              <BaseInput
                 id="address"
-                type="text"
                 placeholder="Address"
                 v-model="formData.address"
-                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                class="bg-gray-200 shadow-none"
               />
             </div>
           </div>
           <div class="flex flex-wrap -mx-3 mb-6">
             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-              <label
-                for="zip_code"
-                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                >Zip code</label
-              >
-              <input
+              <BaseLabel id="zip_code">Zip code</BaseLabel>
+              <BaseInput
                 id="zip_code"
-                type="text"
                 placeholder="Zip code"
                 v-model="formData.zip_code"
-                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                class="bg-gray-200 shadow-none"
               />
             </div>
             <div class="w-full md:w-1/2 px-3">
-              <label
-                for="phone"
-                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                >Phone number</label
-              >
-              <input
+              <BaseLabel id="phone">Phone number</BaseLabel>
+              <BaseInput
                 id="phone"
-                type="text"
                 placeholder="Phone number"
                 v-model="formData.phone"
-                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                class="bg-gray-200 shadow-none"
               />
             </div>
-            <div class="flex items-center justify-between">
-              <button type="submit" class="btn btn-blue" @click.prevent="onSubmit">Save</button>
-              <button type="submit" class="btn" @click.prevent="resetFormKey++">Cancel</button>
-            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <BaseButton type="submit" @click.prevent="onSubmit">Save</BaseButton>
+            <BaseButton type="submit" class="btn-yellow" @click.prevent="resetFormKey++"
+              >Cancel</BaseButton
+            >
           </div>
         </form>
       </div>

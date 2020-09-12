@@ -18,7 +18,9 @@
       <div class="nav">
         <ul class="navbar-nav ml-auto text-right text-xl">
           <li v-if="isLoggedIn" class="pt-6 px-6">
-            <router-link :to="{ name: 'ProfileEdit' }" class="menu-item ml-3">My profile</router-link>
+            <router-link :to="{ name: 'ProfileEdit' }" class="menu-item ml-3"
+              >My profile</router-link
+            >
           </li>
           <li v-if="!isLoggedIn" class="pt-6 px-6">
             <router-link :to="{ name: 'Login' }" class="menu-item ml-3">Login</router-link>
@@ -30,7 +32,7 @@
             <router-link :to="{ name: 'ContactUs' }" class="menu-item ml-3">Contact us</router-link>
           </li>
           <li v-if="isLoggedIn === true" class="pt-6 px-6">
-            <button class="menu-item" @click.prevent="logout">Logout</button>
+            <BaseButton class="menu-item" @click.prevent="logout">Logout</BaseButton>
           </li>
         </ul>
       </div>
@@ -146,5 +148,8 @@ export default {
 .menu-item {
   text-decoration: none;
   color: inherit;
+  font-weight: normal;
+  padding: 0;
+  background: transparent;
 }
 </style>

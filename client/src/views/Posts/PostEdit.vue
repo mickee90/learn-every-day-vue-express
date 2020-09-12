@@ -5,11 +5,9 @@
     </div>-->
     <div>
       <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="title">Title</label>
-        <input
+        <BaseLabel id="title" required>Title</BaseLabel>
+        <BaseInput
           id="title"
-          type="text"
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           :class="{ 'border-red-500 mb-3': $v.title.$error }"
           required
           placeholder="Title"
@@ -21,7 +19,7 @@
       </div>
 
       <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="title">Date</label>
+        <BaseLabel id="title" required>Date</BaseLabel>
         <input
           id="date"
           type="date"
@@ -32,13 +30,13 @@
           autocomplete="date"
           autofocus
           :value="formatPublishedDate()"
-          @change="(event) => post.published_date = event.target.value"
+          @change="event => (post.published_date = event.target.value)"
         />
         <p v-if="$v.published_date.$error" class="text-red-500 text-xs italic">Enter a date.</p>
       </div>
 
       <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="content">Content</label>
+        <BaseLabel id="content" required>Content</BaseLabel>
         <textarea
           id="content"
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -51,8 +49,8 @@
       </div>
     </div>
     <div class="mt-6 text-right border-t pt-3">
-      <button class="btn btn-green" @click="onSave">Save</button>
-      <button class="btn btn-yellow" @click="onCancel">Cancel</button>
+      <BaseButton class="btn-green" @click="onSave">Save</BaseButton>
+      <BaseButton class="btn-yellow" @click="onCancel">Cancel</BaseButton>
     </div>
   </div>
 </template>
