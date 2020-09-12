@@ -1,5 +1,5 @@
 import router from "@/router";
-import axios from "axios";
+import axios from "@/axios";
 
 const getters = {
   getToken(state) {

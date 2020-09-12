@@ -2,7 +2,11 @@
   <div id="app">
     <app-nav />
     <div class="app-container">
-      <router-view />
+      <!--
+    Even when routes use the same component, treat them
+    as distinct and create the component again.
+    -->
+      <RouterView :key="$route.fullPath" />
     </div>
   </div>
 </template>

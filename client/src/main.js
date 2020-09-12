@@ -10,6 +10,9 @@ import "./assets/styles/index.css";
 
 Vue.use(Vuelidate);
 
+// Globally register all `_base`-prefixed components
+import "./components/Globals/_globals";
+
 Vue.config.productionTip = false;
 
 new Vue({

@@ -21,7 +21,7 @@ instance.interceptors.response.use(
     if (error.response.status === 401) {
       localStorage.removeItem("led_user");
       localStorage.removeItem("led_isLoggedIn");
-      router.replace("/");
+      router.replace("/login");
     }
 
     return Promise.reject(error);
