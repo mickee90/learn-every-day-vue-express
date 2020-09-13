@@ -1,11 +1,7 @@
-import { shallowMount, mount, createLocalVue } from "@vue/test-utils";
-import VueRouter from "vue-router";
+import { shallowMount, mount } from "@vue/test-utils";
 
 import Home from "@/views/Home.vue";
 import router from "@/router";
-
-const localVue = createLocalVue();
-localVue.use(VueRouter);
 
 describe("Home.vue", () => {
   it("has welcome text as h1", () => {

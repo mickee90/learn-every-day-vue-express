@@ -99,7 +99,8 @@
             </div>
             <div class="w-full md:w-1/2 px-3">
               <BaseLabel id="phone">Phone number</BaseLabel>
-              <BaseInput
+              <input
+                type="text"
                 id="phone"
                 placeholder="Phone number"
                 v-model="formData.phone"
