@@ -57,8 +57,18 @@ app.use(errorHandling);
 
 const port = process.env.PORT || 3000;
 
-(async () => {
-  await sequelize.sync({ force: true });
+// (async () => {
+//   await sequelize.sync({ force: true });
 
-  app.listen(port, () => console.info(`Server running on port ${port}`));
-})();
+//   app.listen(port, () => console.info(`Server running on port ${port}`));
+// })();
+sequelize.sync().then(
+  function () {
+    console.log("DB connection sucessful.");
+    app.listen(port, () => console.info(`Server running on port ${port}`));
+  },
+  function (err) {
+    // catch error here
+    console.log(err);
+  }
+);

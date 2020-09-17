@@ -67,6 +67,9 @@ Object.defineProperty(window, "localStorage", {
       setItem: function(key, value) {
         store[key] = value.toString();
       },
+      removeItem: function(key, value) {
+        delete store[key];
+      },
       clear: function() {
         store = {};
       }
@@ -87,7 +90,7 @@ Object.defineProperty(window, "localStorage", {
 //   throw message instanceof Error ? message : new Error(message);
 // };
 
-// // Make console.warn throw, so that Jest tests fail
+// // // Make console.warn throw, so that Jest tests fail
 // const warn = console.warn;
 // console.warn = function(message) {
 //   warn.apply(console, arguments);

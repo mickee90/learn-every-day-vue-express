@@ -8,7 +8,7 @@ import ProfileEdit from "@/views/Profile/ProfileEdit";
 
 Vue.use(Vuelidate);
 
-describe("ProfileEdit.vue", () => {
+describe("@/views/Profile/ProfileEdit.vue", () => {
   it("has a username field", () => {
     const wrapper = mountWithStore();
 

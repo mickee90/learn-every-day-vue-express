@@ -56,14 +56,11 @@ const mutations = {
   }
 };
 
-const actions = {
+export const actions = {
   async login({ commit }, { username, password }) {
     const response = await axios.post(
       "http://localhost:3000/api/v1/login",
-      {
-        username,
-        password
-      },
+      { username, password },
       { withCredentials: true }
     );
 
@@ -88,7 +85,7 @@ const actions = {
 
     commit("logout");
 
-    router.push({ name: "Home" });
+    router.push({ name: "Login" });
   },
   async updateUser({ commit }, payload) {
     const response = await axios.put("http://localhost:3000/api/v1/users", payload, {

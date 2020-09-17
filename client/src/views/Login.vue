@@ -31,7 +31,7 @@
           <p v-if="$v.password.$error" class="text-red-500 text-xs italic">Enter your password.</p>
         </div>
         <div class="flex items-center justify-between">
-          <BaseButton type="submit" @click.prevent="onSubmit">Login</BaseButton>
+          <BaseButton id="submitBtn" type="submit" @click.prevent="onSubmit">Login</BaseButton>
           <!-- <a
             class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
             href="#"
@@ -60,14 +60,14 @@ export default {
 
       if (this.$v.username.$error || this.$v.password.$error) return;
 
-      this.$store.dispatch("auth/login", {
+      await this.$store.dispatch("auth/login", {
         username: this.username,
         password: this.password
       });
     }
   },
   created() {
-    this.$store.commit("auth/logout");
+    // this.$store.dispatch("auth/logout");
   },
   validations: {
     username: {
