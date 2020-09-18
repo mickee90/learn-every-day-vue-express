@@ -56,7 +56,7 @@ describe("@/views/Profile/ProfileEdit.vue", () => {
 
     expect(wrapper.vm.$v.formData.username.$error).toBe(true);
 
-    username.element.value = "joedoe@mail.com";
+    username.element.value = "johndoe@mail.com";
     username.trigger("input");
     form.trigger("submit.prevent");
 
@@ -300,10 +300,10 @@ describe("@/views/Profile/ProfileEdit.vue", () => {
 
 function mountWithStore() {
   const defaultUser = {
-    username: "joedoe@mail.com",
-    first_name: "Joe",
+    username: "johndoe@mail.com",
+    first_name: "JohnDoe",
     last_name: "Doe",
-    email: "joedoe@mail.com",
+    email: "johndoe@mail.com",
     address: "",
     zip_code: "",
     city: "",

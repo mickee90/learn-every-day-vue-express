@@ -64,7 +64,7 @@ describe("@/views/Login", () => {
     const username = wrapper.find("#username");
     const password = wrapper.find("#password");
 
-    username.element.value = "joedoe@email.com";
+    username.element.value = "johndoe@email.com";
     password.element.value = "passwordz";
 
     username.trigger("input");
