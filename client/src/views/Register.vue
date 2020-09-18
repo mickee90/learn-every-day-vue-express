@@ -1,7 +1,7 @@
 <template>
   <div class="lg:max-w-v-1/2 max-w-v-9/10 mx-auto">
     <div class="content">
-      <div class="bg-white m-auto max-w-lg p-16 rounded-md w-full">
+      <form class="bg-white m-auto max-w-lg p-16 rounded-md w-full">
         <div class="flex flex-wrap -mx-3 mb-6">
           <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <BaseLabel id="first_name" required>First name</BaseLabel>
@@ -95,11 +95,13 @@
         <div class="flex justify-end items-center">
           <div class>
             <div class="relative">
-              <BaseButton @click="onRegister">Register</BaseButton>
+              <BaseButton id="registerBtn" type="submit" @click.prevent="onRegister"
+                >Register</BaseButton
+              >
             </div>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 </template>
@@ -118,12 +120,12 @@ export default {
     };
   },
   methods: {
-    onRegister() {
+    async onRegister() {
       this.$v.$touch();
 
       if (this.$v.$error) return;
 
-      this.$store.dispatch("auth/register", {
+      await this.$store.dispatch("auth/register", {
         username: this.username,
         first_name: this.first_name,
         last_name: this.last_name,
@@ -147,6 +149,7 @@ export default {
       minLen: minLength(6)
     },
     confirm_password: {
+      required,
       sameAs: sameAs("password")
     }
   }
