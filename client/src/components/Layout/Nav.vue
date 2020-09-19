@@ -67,7 +67,7 @@ export default {
     });
   },
   created() {
-    console.log(this.isLoggedIn);
+    // console.log(this.isLoggedIn);
   }
 };
 </script>
