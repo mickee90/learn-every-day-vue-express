@@ -1,6 +1,8 @@
 <template>
   <div class="h-screen relative">
-    <div v-if="posts === null">Loader</div>
+    <div class="loading-spinner" v-if="posts === null">
+      <bounce-loader></bounce-loader>
+    </div>
     <div v-else-if="posts.length === 0">You have not created any posts yet.</div>
     <div v-else>
       <PostItem v-for="post in posts" :key="post.id" :post="post"></PostItem>
@@ -18,9 +20,10 @@
 <script>
 import PostItem from "./PostItem";
 import { mapState, mapActions } from "vuex";
+import BounceLoader from "vue-spinner/src/BounceLoader.vue";
 
 export default {
-  components: { PostItem },
+  components: { PostItem, BounceLoader },
   computed: {
     ...mapState("auth", ["user", "isLoggedIn"]),
     ...mapState("posts", ["posts"])

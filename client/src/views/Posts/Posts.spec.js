@@ -1,6 +1,7 @@
 import Posts from "@/views/Posts/Posts.vue";
 import PostItem from "@/views/Posts/PostItem.vue";
 import { shallowMount } from "@vue/test-utils";
+import BounceLoader from "vue-spinner/src/BounceLoader.vue";
 
 describe("@/views/Posts/Posts.vue", () => {
   let wrapper;
@@ -36,10 +37,14 @@ describe("@/views/Posts/Posts.vue", () => {
   // @TODO: Requires axios + backend api mock
   // it("Only lists the posts made by the user", async () => {});
 
-  // @TODO: Create a global loader
   // @TODO: Check if the loader disappears after the fetch is done
   it("It shows a loader before the posts is fetched", async () => {
-    expect(wrapper.text()).toContain("Loader");
+    expect(wrapper.findComponent(BounceLoader).exists()).toBe(true);
+
+    state.posts = posts;
+    await wrapper.vm.$nextTick();
+
+    expect(wrapper.findComponent(BounceLoader).exists()).toBe(false);
   });
   it("Shows text to explain if the user does not have any posts", async () => {
     state.posts = [];
@@ -71,7 +76,8 @@ function mountWithStore(authState, state) {
         }
       },
       stubs: {
-        PostItem
+        PostItem,
+        BounceLoader
       },
       router: true
     })

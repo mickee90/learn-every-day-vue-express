@@ -69,3 +69,12 @@ a {
 a.router-link-exact-active {
   @apply text-blue-500 !important;
 }
+
+.loading-spinner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: grid;
+  place-items: center;
+}
