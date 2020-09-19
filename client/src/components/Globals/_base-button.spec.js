@@ -8,4 +8,12 @@ describe("@/components/Globals/_base-button.vue", () => {
 
     expect(element.innerHTML).toContain(slotContent);
   });
+  it("Calls click event when clicked", () => {
+    const onClick = jest.fn();
+    const wrapper = shallowMount(BaseButton, { listeners: { click: onClick } });
+
+    wrapper.find("button").trigger("click");
+
+    expect(onClick).toHaveBeenCalled();
+  });
 });
