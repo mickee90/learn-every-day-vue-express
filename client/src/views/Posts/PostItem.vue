@@ -1,5 +1,8 @@
 <template>
-  <router-link :to="{ name: 'PostShow', params: { id: post.id} }" class="w-full p-1 m-auto block">
+  <router-link
+    :to="{ name: 'PostShow', params: { id: post.id } }"
+    class="w-full p-1 m-auto block post-item"
+  >
     <div class="bg-white border rounded shadow p-2">
       <div class="flex flex-row items-center">
         <div class="flex-shrink pr-4"></div>

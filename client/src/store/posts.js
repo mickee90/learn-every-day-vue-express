@@ -11,7 +11,7 @@ const getters = {
 };
 
 const state = {
-  posts: [],
+  posts: null,
   post: null
 };
 
