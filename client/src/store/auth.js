@@ -58,11 +58,9 @@ const mutations = {
 
 export const actions = {
   async login({ commit }, { username, password }) {
-    const response = await axios.post(
-      "http://localhost:3000/api/v1/login",
-      { username, password },
-      { withCredentials: true }
-    );
+    console.log("yo");
+    const response = await axios.post("/login", { username, password }, { withCredentials: true });
+    console.log("yo2");
 
     // @TODO error handling
     if (!response) return;

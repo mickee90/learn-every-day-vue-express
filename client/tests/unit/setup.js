@@ -109,22 +109,6 @@ global.mount = vueTestUtils.mount;
 // https://vue-test-utils.vuejs.org/api/#shallowmount
 global.shallowMount = vueTestUtils.shallowMount;
 
-// // A special version of `shallowMount` for view components
-global.shallowMountView = (Component, options = {}) => {
-  return global.shallowMount(Component, {
-    ...options,
-    stubs: {
-      Layout: {
-        functional: true,
-        render(h, { slots }) {
-          return <div>{slots().default}</div>;
-        }
-      },
-      ...(options.stubs || {})
-    }
-  });
-};
-
 // A helper for creating Vue component mocks
 global.createComponentMocks = ({ store, router, style, mocks, stubs }) => {
   // Use a local version of Vue, to avoid polluting the global

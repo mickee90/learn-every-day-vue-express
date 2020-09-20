@@ -2,8 +2,15 @@ import Vue from "vue";
 import Vuelidate from "vuelidate";
 
 import Login from "@/views/Login";
+import BaseButton from "@/components/Globals/_base-button.vue";
+import BaseInput from "@/components/Globals/_base-input.vue";
+import BaseLabel from "@/components/Globals/_base-label.vue";
 
 import flushPromises from "flush-promises";
+
+import store from "@/store";
+import { shallowMount } from "@vue/test-utils";
+
 Vue.use(Vuelidate);
 
 describe("@/views/Login", () => {
@@ -84,18 +91,19 @@ describe("@/views/Login", () => {
 });
 
 function mountWithStore() {
-  const actions = {
-    login: jest.fn(),
-    logout: jest.fn()
-  };
+  return shallowMount(Login, { store, stubs: { BaseInput, BaseButton, BaseLabel } });
+  // const actions = {
+  //   login: jest.fn(),
+  //   logout: jest.fn()
+  // };
 
-  return mount(Login, {
-    ...createComponentMocks({
-      store: {
-        auth: {
-          actions
-        }
-      }
-    })
-  });
+  // return mount(Login, {
+  //   ...createComponentMocks({
+  //     store: {
+  //       auth: {
+  //         actions
+  //       }
+  //     }
+  //   })
+  // });
 }
