@@ -32,7 +32,12 @@ describe("@/views/Register.vue", () => {
 
     await flushPromises();
 
-    await expect(spyDispatch).toHaveBeenCalled();
+    await expect(spyDispatch).toHaveBeenCalledWith("auth/register", {
+      username: wrapper.vm.username,
+      first_name: wrapper.vm.first_name,
+      last_name: wrapper.vm.last_name,
+      password: wrapper.vm.password
+    });
   });
 
   it("all fields are required", async () => {

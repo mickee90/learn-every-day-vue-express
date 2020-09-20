@@ -70,7 +70,6 @@ describe("@/views/Posts/PostCreate.vue", () => {
 
     await flushPromises();
 
-    await expect(spyDispatch).toHaveBeenCalled();
     await expect(spyDispatch).toHaveBeenCalledWith("posts/createPost", wrapper.vm.post);
   });
   it("Has a cancel button", () => {

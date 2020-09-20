@@ -71,7 +71,10 @@ describe("@/views/Login", () => {
 
     await flushPromises();
 
-    await expect(spyDispatch).toHaveBeenCalled();
+    await expect(spyDispatch).toHaveBeenCalledWith("auth/login", {
+      username: username.element.value,
+      password: password.element.value
+    });
 
     // @TODO add expect for redirect as well
   });

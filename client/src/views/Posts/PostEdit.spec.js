@@ -60,7 +60,12 @@ describe("@/views/Posts/PostEdit.vue", () => {
 
     await flushPromises();
 
-    await expect(spyDispatch).toHaveBeenCalled();
+    await expect(spyDispatch).toHaveBeenCalledWith("posts/editPost", {
+      id: wrapper.vm.post.id,
+      title: wrapper.vm.post.title,
+      published_date: wrapper.vm.post.published_date,
+      content: wrapper.vm.post.content
+    });
   });
   it("Has a cancel button", () => {
     expect(wrapper.text()).toContain("Cancel");
