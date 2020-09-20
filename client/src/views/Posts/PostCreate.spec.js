@@ -1,37 +1,32 @@
 import Vue from "vue";
 import Vuelidate from "vuelidate";
 
-import PostEdit from "@/views/Posts/PostEdit.vue";
+import PostCreate from "@/views/Posts/PostCreate.vue";
 import BaseButton from "@/components/Globals/_base-button.vue";
 import BaseLabel from "@/components/Globals/_base-label.vue";
 import BaseInput from "@/components/Globals/_base-input.vue";
+
+import { fullDate } from "@/helpers/DateTimes.js";
 
 import flushPromises from "flush-promises";
 
 Vue.use(Vuelidate);
 
-describe("@/views/Posts/PostEdit.vue", () => {
+describe("@/views/Posts/PostCreate.vue", () => {
   let wrapper;
-  const post = {
-    id: 1,
-    title: "One post",
-    published_date: "2020-08-20 20:20:20",
-    content: "Lorem etc"
-  };
-  const display_date_format = "2020-08-20";
 
   beforeEach(() => {
-    wrapper = mountWithStore(post);
+    wrapper = mountWithStore();
     wrapper.vm.$v.$touch();
   });
 
-  it("Shows title, date and content", () => {
-    expect(wrapper.find("#title").element.value).toEqual(post.title);
-    expect(wrapper.find("#published_date").element.value).toEqual(display_date_format);
-    expect(wrapper.find("#content").element.value).toEqual(post.content);
-  });
+  it("Populate the published_date field to todays date on init", () => {
+    const { element } = wrapper.find("#published_date");
+    const today = fullDate(new Date());
 
-  it("Requires all fields", () => {
+    expect(element.value).toEqual(today);
+  });
+  it("Requires all field", async () => {
     const title = wrapper.find("#title");
     const published_date = wrapper.find("#published_date");
     const content = wrapper.find("#content");
@@ -41,18 +36,33 @@ describe("@/views/Posts/PostEdit.vue", () => {
     content.element.value = "";
 
     title.trigger("input");
-    published_date.trigger("input");
+    published_date.trigger("change");
     content.trigger("input");
 
-    wrapper.vm.$nextTick();
+    await wrapper.find("#saveBtn").trigger("click.prevent");
 
-    expect(wrapper.vm.$v.title.$error).toBe(true);
-    expect(wrapper.vm.$v.published_date.$error).toBe(true);
-    expect(wrapper.vm.$v.content.$error).toBe(true);
+    await wrapper.vm.$nextTick();
+
+    await flushPromises();
+
+    expect(wrapper.vm.$v.post.title.$error).toBe(true);
+    expect(wrapper.vm.$v.post.published_date.$error).toBe(true);
+    expect(wrapper.vm.$v.post.content.$error).toBe(true);
   });
 
-  it("Dispatch vuex editPost on save", async () => {
+  it("Dispatch vuex createPost on save", async () => {
     const spyDispatch = spyOn(wrapper.vm.$store, "dispatch");
+    const title = wrapper.find("#title");
+    const published_date = wrapper.find("#published_date");
+    const content = wrapper.find("#content");
+
+    title.element.value = "Some title";
+    published_date.element.value = "2020-12-19";
+    content.element.value = "Some content";
+
+    title.trigger("input");
+    published_date.trigger("change");
+    content.trigger("input");
 
     await wrapper.find("#saveBtn").trigger("click.prevent");
 
@@ -61,6 +71,7 @@ describe("@/views/Posts/PostEdit.vue", () => {
     await flushPromises();
 
     await expect(spyDispatch).toHaveBeenCalled();
+    await expect(spyDispatch).toHaveBeenCalledWith("posts/createPost", wrapper.vm.post);
   });
   it("Has a cancel button", () => {
     expect(wrapper.text()).toContain("Cancel");
@@ -86,20 +97,15 @@ describe("@/views/Posts/PostEdit.vue", () => {
   // @TODO: check if redirected when clicking save
 });
 
-function mountWithStore(post) {
+function mountWithStore() {
   const actions = {
-    editPost: jest.fn(),
-    fetchPost: jest.fn(),
-    deletePost: jest.fn()
+    createPost: jest.fn()
   };
 
-  return shallowMount(PostEdit, {
+  return shallowMount(PostCreate, {
     ...createComponentMocks({
       store: {
         posts: {
-          state: {
-            post
-          },
           actions
         }
       },
