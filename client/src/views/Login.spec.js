@@ -7,18 +7,19 @@ import flushPromises from "flush-promises";
 Vue.use(Vuelidate);
 
 describe("@/views/Login", () => {
+  let wrapper;
+  beforeEach(() => {
+    wrapper = mountWithStore();
+    wrapper.vm.$v.$touch();
+  });
+
   it("has a username field", () => {
-    const wrapper = mountWithStore();
     expect(wrapper.find("#username").exists()).toBe(true);
   });
   it("has a password field", () => {
-    const wrapper = mountWithStore();
     expect(wrapper.find("#password").exists()).toBe(true);
   });
   it("requires both username and password for login", () => {
-    const wrapper = mountWithStore();
-    wrapper.vm.$v.$touch();
-
     const username = wrapper.find("#username");
     const password = wrapper.find("#password");
 
@@ -34,9 +35,6 @@ describe("@/views/Login", () => {
     expect(wrapper.vm.$v.password.$error).toBe(true);
   });
   it("requires username in email format", () => {
-    const wrapper = mountWithStore();
-    wrapper.vm.$v.$touch();
-
     const username = wrapper.find("#username");
 
     expect(wrapper.vm.$v.username.$error).toBe(true);
@@ -56,10 +54,7 @@ describe("@/views/Login", () => {
     expect(wrapper.vm.$v.username.$error).toBe(false);
   });
   it("redirects to posts on successful login", async () => {
-    const wrapper = mountWithStore();
-
-    const spyDispatch = spyOn(wrapper.vm.$store, "dispatch");
-    wrapper.vm.$v.$touch();
+    const spyDispatch = jest.spyOn(wrapper.vm.$store, "dispatch");
 
     const username = wrapper.find("#username");
     const password = wrapper.find("#password");
@@ -95,7 +90,6 @@ function mountWithStore() {
     ...createComponentMocks({
       store: {
         auth: {
-          namespaced: true,
           actions
         }
       }

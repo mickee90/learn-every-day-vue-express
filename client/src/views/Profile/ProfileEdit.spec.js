@@ -8,19 +8,39 @@ import ProfileEdit from "@/views/Profile/ProfileEdit";
 
 Vue.use(Vuelidate);
 
-describe("@/views/Profile/ProfileEdit.vue", () => {
-  it("has a username field", () => {
-    const wrapper = mountWithStore();
+const defaultUser = {
+  username: "johndoe@mail.com",
+  first_name: "JohnDoe",
+  last_name: "Doe",
+  email: "johndoe@mail.com",
+  address: "",
+  zip_code: "",
+  city: "",
+  phone: "",
+  disabled: false,
+  banned: false
+};
 
+describe("@/views/Profile/ProfileEdit.vue", () => {
+  let wrapper;
+  let state;
+
+  beforeEach(() => {
+    state = {
+      user: defaultUser
+    };
+
+    wrapper = mountWithStore(state);
+    wrapper.vm.$v.$touch();
+  });
+
+  it("has a username field", () => {
     expect(wrapper.find("#username").element.value).toBe(
       wrapper.vm.$store.getters["auth/getUser"].username
     );
   });
 
   it("the username field is required", async () => {
-    const wrapper = mountWithStore();
-    wrapper.vm.$v.$touch();
-
     const username = wrapper.find("#username");
     const form = wrapper.find("#ProfileEditForm");
 
@@ -34,9 +54,6 @@ describe("@/views/Profile/ProfileEdit.vue", () => {
   });
 
   it("the username field requires an email format", async () => {
-    const wrapper = mountWithStore();
-    wrapper.vm.$v.$touch();
-
     const username = wrapper.find("#username");
     const form = wrapper.find("#ProfileEditForm");
 
@@ -66,17 +83,12 @@ describe("@/views/Profile/ProfileEdit.vue", () => {
   });
 
   it("has a first name field", () => {
-    const wrapper = mountWithStore();
-
     expect(wrapper.find("#first_name").element.value).toBe(
       wrapper.vm.$store.getters["auth/getUser"].first_name
     );
   });
 
   it("the first name field is required", async () => {
-    const wrapper = mountWithStore();
-    wrapper.vm.$v.$touch();
-
     const first_name = wrapper.find("#first_name");
     const form = wrapper.find("#ProfileEditForm");
 
@@ -90,17 +102,12 @@ describe("@/views/Profile/ProfileEdit.vue", () => {
   });
 
   it("has a last name field", async () => {
-    const wrapper = mountWithStore();
-
     expect(wrapper.find("#last_name").element.value).toBe(
       wrapper.vm.$store.getters["auth/getUser"].last_name
     );
   });
 
   it("the last name field is required", async () => {
-    const wrapper = mountWithStore();
-    wrapper.vm.$v.$touch();
-
     const last_name = wrapper.find("#last_name");
     const form = wrapper.find("#ProfileEditForm");
 
@@ -114,17 +121,12 @@ describe("@/views/Profile/ProfileEdit.vue", () => {
   });
 
   it("has a email field", () => {
-    const wrapper = mountWithStore();
-
     expect(wrapper.find("#email").element.value).toBe(
       wrapper.vm.$store.getters["auth/getUser"].email
     );
   });
 
   it("the email field is required", async () => {
-    const wrapper = mountWithStore();
-    wrapper.vm.$v.$touch();
-
     const email = wrapper.find("#email");
     const form = wrapper.find("#ProfileEditForm");
 
@@ -138,17 +140,12 @@ describe("@/views/Profile/ProfileEdit.vue", () => {
   });
 
   it("has a city field", () => {
-    const wrapper = mountWithStore();
-
     expect(wrapper.find("#city").element.value).toBe(
       wrapper.vm.$store.getters["auth/getUser"].city
     );
   });
 
   it("the city field is not required", async () => {
-    const wrapper = mountWithStore();
-    wrapper.vm.$v.$touch();
-
     const city = wrapper.find("#city");
     const form = wrapper.find("#ProfileEditForm");
 
@@ -162,17 +159,12 @@ describe("@/views/Profile/ProfileEdit.vue", () => {
   });
 
   it("has a address field", () => {
-    const wrapper = mountWithStore();
-
     expect(wrapper.find("#address").element.value).toBe(
       wrapper.vm.$store.getters["auth/getUser"].address
     );
   });
 
   it("the address field is not required", async () => {
-    const wrapper = mountWithStore();
-    wrapper.vm.$v.$touch();
-
     const address = wrapper.find("#address");
     const form = wrapper.find("#ProfileEditForm");
 
@@ -186,17 +178,12 @@ describe("@/views/Profile/ProfileEdit.vue", () => {
   });
 
   it("has a zip code field", () => {
-    const wrapper = mountWithStore();
-
     expect(wrapper.find("#zip_code").element.value).toBe(
       wrapper.vm.$store.getters["auth/getUser"].zip_code
     );
   });
 
   it("the zip code field is not required", async () => {
-    const wrapper = mountWithStore();
-    wrapper.vm.$v.$touch();
-
     const zip_code = wrapper.find("#zip_code");
     const form = wrapper.find("#ProfileEditForm");
 
@@ -210,17 +197,12 @@ describe("@/views/Profile/ProfileEdit.vue", () => {
   });
 
   it("has a phone field", () => {
-    const wrapper = mountWithStore();
-
     expect(wrapper.find("#phone").element.value).toBe(
       wrapper.vm.$store.getters["auth/getUser"].phone
     );
   });
 
   it("the phone field is not required", async () => {
-    const wrapper = mountWithStore();
-    wrapper.vm.$v.$touch();
-
     const phone = wrapper.find("#phone");
     const form = wrapper.find("#ProfileEditForm");
 
@@ -234,11 +216,8 @@ describe("@/views/Profile/ProfileEdit.vue", () => {
   });
 
   it("updates the users profile in case of correct inputs", async () => {
-    const spyOnSubmit = spyOn(ProfileEdit.methods, "onSubmit");
-    // const spyDispatch = spyOn(wrapper.vm.$store, "dispatch");
-
-    const wrapper = mountWithStore();
-    wrapper.vm.$v.$touch();
+    const spyOnSubmit = jest.spyOn(wrapper.vm, "onSubmit");
+    const spyDispatch = jest.spyOn(wrapper.vm.$store, "dispatch");
 
     const form = wrapper.find("#ProfileEditForm");
 
@@ -283,10 +262,10 @@ describe("@/views/Profile/ProfileEdit.vue", () => {
     expect(wrapper.vm.$v.formData.$error).toBe(false);
     expect(spyOnSubmit).toHaveBeenCalled();
 
-    // @TODO Check why these ain't
-    // expect(spyDispatch).toHaveBeenCalledWith("auth/updateUser");
+    expect(spyDispatch).toHaveBeenCalledWith("auth/updateUser", wrapper.vm.formData);
 
-    // expect(actions.updateUser).toHaveBeenCalled();
+    // TODO: mock updateUser to edit the state. Requires a api/axios mock?
+
     // expect(state.user.username).toBe("email@mail.com");
     // expect(state.user.first_name).toBe("first_name");
     // expect(state.user.last_name).toBe("last_name");
@@ -298,24 +277,7 @@ describe("@/views/Profile/ProfileEdit.vue", () => {
   });
 });
 
-function mountWithStore() {
-  const defaultUser = {
-    username: "johndoe@mail.com",
-    first_name: "JohnDoe",
-    last_name: "Doe",
-    email: "johndoe@mail.com",
-    address: "",
-    zip_code: "",
-    city: "",
-    phone: "",
-    disabled: false,
-    banned: false
-  };
-
-  const state = {
-    user: defaultUser
-  };
-
+function mountWithStore(state) {
   const actions = {
     updateUser: jest.fn()
   };
@@ -328,7 +290,6 @@ function mountWithStore() {
     ...createComponentMocks({
       store: {
         auth: {
-          namespaced: true,
           state,
           getters,
           actions

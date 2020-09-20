@@ -41,7 +41,6 @@ function mountWithStore(post) {
     ...createComponentMocks({
       store: {
         posts: {
-          namespaced: true,
           state: {
             post
           },

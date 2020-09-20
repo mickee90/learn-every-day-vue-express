@@ -13,13 +13,12 @@ describe("@/views/Register.vue", () => {
   let wrapper;
   beforeEach(() => {
     wrapper = mountWithStore();
+    wrapper.vm.$v.$touch();
   });
 
   // @TODO add expect for redirection
   it("dispatch auth/register to be called + redirect to login view", async () => {
-    const spyDispatch = spyOn(wrapper.vm.$store, "dispatch");
-
-    wrapper.vm.$v.$touch();
+    const spyDispatch = jest.spyOn(wrapper.vm.$store, "dispatch");
 
     wrapper.vm.username = "valid_username@mail.com";
     wrapper.vm.first_name = "valid_first_name";
@@ -37,8 +36,6 @@ describe("@/views/Register.vue", () => {
   });
 
   it("all fields are required", async () => {
-    wrapper.vm.$v.$touch();
-
     wrapper.vm.username = "";
     wrapper.vm.first_name = "";
     wrapper.vm.last_name = "";
@@ -56,8 +53,6 @@ describe("@/views/Register.vue", () => {
     expect(wrapper.vm.$v.confirm_password.$error).toBe(true);
   });
   it("the username field requires email", async () => {
-    wrapper.vm.$v.$touch();
-
     wrapper.vm.username = "";
     await wrapper.find("#registerBtn").trigger("click.prevent");
     await wrapper.vm.$nextTick();
@@ -77,8 +72,6 @@ describe("@/views/Register.vue", () => {
     expect(wrapper.vm.$v.username.$error).toBe(false);
   });
   it("the password field requires 6 chars", async () => {
-    wrapper.vm.$v.$touch();
-
     wrapper.vm.password = "";
     await wrapper.find("#registerBtn").trigger("click.prevent");
     await wrapper.vm.$nextTick();
@@ -99,8 +92,6 @@ describe("@/views/Register.vue", () => {
   });
 
   it("the password and confirm password field need to match", async () => {
-    wrapper.vm.$v.$touch();
-
     wrapper.vm.password = "123456";
     wrapper.vm.confirm_password = "";
     await wrapper.find("#registerBtn").trigger("click.prevent");
@@ -146,7 +137,6 @@ function mountWithStore() {
     ...createComponentMocks({
       store: {
         auth: {
-          namespaced: true,
           actions
         }
       },

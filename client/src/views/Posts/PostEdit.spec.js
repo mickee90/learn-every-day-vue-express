@@ -22,19 +22,16 @@ describe("@/views/Posts/PostEdit.vue", () => {
 
   beforeEach(() => {
     wrapper = mountWithStore(post);
+    wrapper.vm.$v.$touch();
   });
 
   it("Shows title, date and content", async () => {
-    wrapper.vm.$v.$touch();
-
     expect(wrapper.find("#title").element.value).toEqual(post.title);
     expect(wrapper.find("#published_date").element.value).toEqual(display_date_format);
     expect(wrapper.find("#content").element.value).toEqual(post.content);
   });
 
   it("Requires all fields", async () => {
-    wrapper.vm.$v.$touch();
-
     const title = wrapper.find("#title");
     const published_date = wrapper.find("#published_date");
     const content = wrapper.find("#content");
@@ -56,7 +53,6 @@ describe("@/views/Posts/PostEdit.vue", () => {
 
   it("Dispatch vuex editPost on save", async () => {
     const spyDispatch = spyOn(wrapper.vm.$store, "dispatch");
-    wrapper.vm.$v.$touch();
 
     await wrapper.find("#saveBtn").trigger("click.prevent");
 
@@ -71,6 +67,20 @@ describe("@/views/Posts/PostEdit.vue", () => {
   });
   it("Has a save button", () => {
     expect(wrapper.text()).toContain("Save");
+  });
+  it("Calls onCancel method when clicking the cancel button", () => {
+    const buttonSpy = jest.spyOn(wrapper.vm, "onCancel").mockImplementation(() => {});
+
+    wrapper.find("#cancelBtn").trigger("click.default");
+
+    expect(buttonSpy).toHaveBeenCalled();
+  });
+  it("Calls onSave method when clicking the save button", () => {
+    const buttonSpy = jest.spyOn(wrapper.vm, "onSave").mockImplementation(() => {});
+
+    wrapper.find("#saveBtn").trigger("click.default");
+
+    expect(buttonSpy).toHaveBeenCalled();
   });
   // @TODO: check if redirected when clicking cancel
   // @TODO: check if redirected when clicking save
@@ -87,7 +97,6 @@ function mountWithStore(post) {
     ...createComponentMocks({
       store: {
         posts: {
-          namespaced: true,
           state: {
             post
           },

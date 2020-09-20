@@ -12,12 +12,11 @@ describe("@/views/ContactUs.vue", () => {
   let wrapper;
   beforeEach(() => {
     wrapper = shallowMount(ContactUs, { stubs: { BaseButton } });
+    wrapper.vm.$v.$touch();
   });
 
   it("calls onSendForm when all inputs are filled and submit button clicked", async () => {
     const spyOnSendForm = jest.spyOn(wrapper.vm, "onSendForm");
-
-    wrapper.vm.$v.$touch();
 
     wrapper.vm.email = "validemail@mail.com";
     wrapper.vm.first_name = "john";
@@ -34,8 +33,6 @@ describe("@/views/ContactUs.vue", () => {
   });
 
   it("has only required fields", async () => {
-    wrapper.vm.$v.$touch();
-
     wrapper.vm.email = "";
     wrapper.vm.first_name = "";
     wrapper.vm.last_name = "";
@@ -52,8 +49,6 @@ describe("@/views/ContactUs.vue", () => {
   });
 
   it("requires the email field to have a valid email format", async () => {
-    wrapper.vm.$v.$touch();
-
     wrapper.vm.email = "";
     await wrapper.find("#sendBtn").trigger("click.prevent");
     await wrapper.vm.$nextTick();

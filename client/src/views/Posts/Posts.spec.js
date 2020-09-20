@@ -66,11 +66,9 @@ function mountWithStore(authState, state) {
     ...createComponentMocks({
       store: {
         auth: {
-          namespaced: true,
           state: authState
         },
         posts: {
-          namespaced: true,
           state,
           actions
         }
