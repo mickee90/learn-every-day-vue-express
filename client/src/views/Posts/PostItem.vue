@@ -33,7 +33,6 @@ export default {
       const current_date = fullDate(new Date());
       return published_date === current_date ? "Today" : published_date;
     }
-  },
-  async created() {}
+  }
 };
 </script>

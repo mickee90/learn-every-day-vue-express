@@ -19,12 +19,12 @@
       </div>
 
       <div class="mb-4">
-        <BaseLabel id="title" required>Date</BaseLabel>
+        <BaseLabel id="published_date" required>Date</BaseLabel>
         <input
-          id="date"
+          id="published_date"
           type="date"
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          :class="{ 'border-red-500 mb-3': $v.title.$error }"
+          :class="{ 'border-red-500 mb-3': $v.published_date.$error }"
           required
           placeholder="Date"
           autocomplete="date"
@@ -49,8 +49,8 @@
       </div>
     </div>
     <div class="mt-6 text-right border-t pt-3">
-      <BaseButton class="btn-green" @click="onSave">Save</BaseButton>
-      <BaseButton class="btn-yellow" @click="onCancel">Cancel</BaseButton>
+      <BaseButton id="saveBtn" class="btn-green" @click.prevent="onSave">Save</BaseButton>
+      <BaseButton id="cancelBtn" class="btn-yellow" @click.prevent="onCancel">Cancel</BaseButton>
     </div>
   </div>
 </template>
@@ -65,7 +65,7 @@ export default {
     ...mapState("posts", ["post"])
   },
   methods: {
-    ...mapActions("posts", ["editPost"]),
+    ...mapActions("posts", ["editPost", "fetchPost"]),
     formatPublishedDate() {
       return fullDate(this.post.published_date);
     },

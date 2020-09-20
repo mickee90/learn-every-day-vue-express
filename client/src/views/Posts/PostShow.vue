@@ -4,7 +4,11 @@
       <div style="background-image: url('')" class="bg-cover bg-center bg-gray-300 h-32 rounded"></div>
     </div>-->
     <div>
-      <div class="text-lg text-bold tracking-wide text-gray-800 mb-2" v-text="post.title"></div>
+      <div
+        id="test"
+        class="text-lg text-bold tracking-wide text-gray-800 mb-2"
+        v-text="post.title"
+      ></div>
       <div
         class="text-sm text-gray-600 font-hairline mb-5 border-b pb-1"
         v-text="formatPublishedDate()"
@@ -12,10 +16,13 @@
       <div class="text-md text-bold tracking-wide text-gray-800" v-text="post.content"></div>
     </div>
     <div class="mt-6 text-right border-t pt-3">
-      <router-link :to="{ name: 'PostEdit', params: { id: post.id } }" class="btn btn-blue mr-3"
+      <router-link
+        id="editPostBtn"
+        :to="{ name: 'PostEdit', params: { id: post.id } }"
+        class="btn btn-blue mr-3"
         >Edit</router-link
       >
-      <BaseButton class="btn-red" @click="deletePost">Delete</BaseButton>
+      <BaseButton id="deletePostBtn" class="btn-red" @click="deletePost">Delete</BaseButton>
     </div>
   </div>
 </template>
