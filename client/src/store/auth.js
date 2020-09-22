@@ -1,5 +1,6 @@
 import router from "@/router";
-import axios from "@/axios";
+// import axios from "@/axios";
+import axios from "axios";
 
 const getters = {
   getToken(state) {
@@ -58,16 +59,26 @@ const mutations = {
 
 export const actions = {
   async login({ commit }, { username, password }) {
+    // console.log(window.location.host);
+    const baseUrl = window.location.origin + "/api/v1/login";
+    console.log(baseUrl);
     console.log("yo");
-    const response = await axios.post("/login", { username, password }, { withCredentials: true });
+    // console.log(axios.post(baseUrl, { username, password }, { withCredentials: true }));
+    const response = await axios.post(
+      baseUrl,
+      { username, password },
+      { "Content-type": "application/json" }
+    );
+
+    console.log(response);
     console.log("yo2");
 
     // @TODO error handling
-    if (!response) return;
+    // if (!response) return;
 
-    commit("setUser", { ...response.data.user });
+    // commit("setUser", { ...response.data.user });
 
-    router.push({ name: "Posts" });
+    // router.push({ name: "Posts" });
   },
   async logout({ commit }) {
     const response = await axios.post(

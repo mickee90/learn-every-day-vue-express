@@ -7,7 +7,7 @@ const path = require("path");
 const bodyParser = require("body-parser");
 
 module.exports = app => {
-  app.use(bodyParser.json());
+  // app.use(bodyParser.json());
 
   fs.readdirSync(path.join(__dirname, "routes")).forEach(routeFileName => {
     if (/\.js$/.test(routeFileName)) {

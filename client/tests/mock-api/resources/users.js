@@ -32,18 +32,16 @@ module.exports = {
       token: `valid-token-for-${user.username}`
     };
   }),
-  authenticate({ username, password }) {
-    return new Promise((resolve, reject) => {
-      const matchedUser = this.all.find(
+  async authenticate({ username, password }) {
+    try {
+      const matchedUser = await this.all.find(
         user => user.username === username && user.password === password
       );
 
-      if (matchedUser) {
-        resolve(this.json(matchedUser));
-      } else {
-        reject(new Error("Invalid user credentials"));
-      }
-    });
+      return this.json(matchedUser);
+    } catch (error) {
+      new Error("Invalid user credentials");
+    }
   },
   findBy(propertyName, value) {
     const matchedUser = this.all.find(user => user[propertyName] === value);
