@@ -13,7 +13,6 @@ instance.defaults.withCredentials = true;
 instance.interceptors.response.use(
   response => response,
   error => {
-    console.log(error);
     if (error.response.status === 500 || error.response.status === 400) {
       alert("Ops! Something went wrong. Please try again.");
     }

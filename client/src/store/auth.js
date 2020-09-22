@@ -58,16 +58,23 @@ const mutations = {
 
 export const actions = {
   async login({ commit }, { username, password }) {
-    console.log("yo");
-    const response = await axios.post("/login", { username, password }, { withCredentials: true });
-    console.log("yo2");
+    try {
+      const response = await axios.post(
+        "/login",
+        { username, password },
+        { withCredentials: true }
+      );
 
-    // @TODO error handling
-    if (!response) return;
+      // @TODO error handling
+      if (!response) return;
 
-    commit("setUser", { ...response.data.user });
+      commit("setUser", { ...response.data.user });
 
-    router.push({ name: "Posts" });
+      router.push({ name: "Posts" });
+    } catch (error) {
+      // @TODO error handling
+      console.log("error");
+    }
   },
   async logout({ commit }) {
     const response = await axios.post(

@@ -11,13 +11,27 @@ import flushPromises from "flush-promises";
 import store from "@/store";
 import { shallowMount } from "@vue/test-utils";
 
+import axios from "@/axios";
+import MockAdapter from "axios-mock-adapter";
+
+import router from "@/router";
+
 Vue.use(Vuelidate);
 
 describe("@/views/Login", () => {
   let wrapper;
+  let mock;
+
   beforeEach(() => {
+    mock = new MockAdapter(axios);
     wrapper = mountWithStore();
     wrapper.vm.$v.$touch();
+  });
+
+  afterEach(() => {
+    wrapper.destroy();
+    wrapper = null;
+    mock.reset();
   });
 
   it("has a username field", () => {
@@ -61,13 +75,15 @@ describe("@/views/Login", () => {
     expect(wrapper.vm.$v.username.$error).toBe(false);
   });
   it("redirects to posts on successful login", async () => {
+    mock.onPost("/login").reply(200, { data: { user: { username: "johndoe@mail.com" } } });
+
     const spyDispatch = jest.spyOn(wrapper.vm.$store, "dispatch");
 
     const username = wrapper.find("#username");
     const password = wrapper.find("#password");
 
-    username.element.value = "johndoe@email.com";
-    password.element.value = "passwordz";
+    username.element.value = "johndoe@mail.com";
+    password.element.value = "password";
 
     username.trigger("input");
     password.trigger("input");
@@ -83,27 +99,46 @@ describe("@/views/Login", () => {
       password: password.element.value
     });
 
-    // @TODO add expect for redirect as well
+    await flushPromises();
+
+    expect(wrapper.vm.$route.name).toBe("Posts");
   });
 
-  // @TODO add test for failing login
-  // @TODO add test for failing login
+  // @TODO Add to see error message
+  it("Does not redirect on failing login", async () => {
+    const startPathName = wrapper.vm.$route.name;
+
+    mock.onPost("/login").reply(404);
+
+    const spyDispatch = jest.spyOn(wrapper.vm.$store, "dispatch");
+
+    const username = wrapper.find("#username");
+    const password = wrapper.find("#password");
+
+    username.element.value = "johndoe@mail.com";
+    password.element.value = "wrong_password";
+
+    username.trigger("input");
+    password.trigger("input");
+
+    await wrapper.find("#submitBtn").trigger("click.prevent");
+
+    await wrapper.vm.$nextTick();
+
+    await flushPromises();
+
+    await expect(spyDispatch).toHaveBeenCalledWith("auth/login", {
+      username: username.element.value,
+      password: password.element.value
+    });
+
+    await flushPromises();
+
+    // No redirection
+    expect(wrapper.vm.$route.name).toBe(startPathName);
+  });
 });
 
 function mountWithStore() {
-  return shallowMount(Login, { store, stubs: { BaseInput, BaseButton, BaseLabel } });
-  // const actions = {
-  //   login: jest.fn(),
-  //   logout: jest.fn()
-  // };
-
-  // return mount(Login, {
-  //   ...createComponentMocks({
-  //     store: {
-  //       auth: {
-  //         actions
-  //       }
-  //     }
-  //   })
-  // });
+  return shallowMount(Login, { store, router, stubs: { BaseInput, BaseButton, BaseLabel } });
 }
