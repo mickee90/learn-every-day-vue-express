@@ -6,7 +6,9 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch",
-    "start-dev": "nodemon dist/app.js"
+    "start-dev": "nodemon dist/app.js",
+    "compile": "tsc && node dist/app.js",
+    "dev": "nodemon -e ts  --exec \"npm run compile\""
   },
   "author": "Mikael Nilsson",
   "license": "ISC",

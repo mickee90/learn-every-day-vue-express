@@ -13,15 +13,19 @@ userRoutes.post("/login", async function (req: Request, res: Response) {
   });
 
   if (!user) {
-    return res
-      .status(401)
-      .json({ success: false, message: "The user could not be found" });
+    return res.status(404).json({
+      success: false,
+      message:
+        "No user was found with the passed username and password. Please try again.",
+    });
   }
 
-  if (!passwordUtils.validatePassword(req.body.password, user.password)) {
-    return res
-      .status(401)
-      .json({ success: false, message: "You entered the wrong password" });
+  if (await !passwordUtils.validatePassword(req.body.password, user.password)) {
+    return res.status(404).json({
+      success: false,
+      message:
+        "No user was found with the passed username and password. Please try again.",
+    });
   } else {
     const tokenObject = passwordUtils.issueJWT(user, false);
 

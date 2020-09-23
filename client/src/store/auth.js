@@ -59,11 +59,7 @@ const mutations = {
 export const actions = {
   async login({ commit }, { username, password }) {
     try {
-      const response = await axios.post(
-        "/login",
-        { username, password },
-        { withCredentials: true }
-      );
+      const response = await axios.post("/login", { username, password });
 
       // @TODO error handling
       if (!response) return;
