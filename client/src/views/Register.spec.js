@@ -7,17 +7,32 @@ import BaseButton from "@/components/Globals/_base-button.vue";
 import { shallowMount } from "@vue/test-utils";
 import flushPromises from "flush-promises";
 
+import axios from "@/axios";
+import MockAdapter from "axios-mock-adapter";
+
+import store from "@/store";
+import router from "@/router";
+
 Vue.use(Vuelidate);
 
 describe("@/views/Register.vue", () => {
   let wrapper;
+  let mock;
+
   beforeEach(() => {
+    mock = new MockAdapter(axios);
     wrapper = mountWithStore();
     wrapper.vm.$v.$touch();
   });
 
-  // @TODO add expect for redirection
+  afterEach(() => {
+    wrapper.destroy();
+    wrapper = null;
+    mock.reset();
+  });
+
   it("dispatch auth/register to be called + redirect to login view", async () => {
+    mock.onPost("/register").reply(200);
     const spyDispatch = jest.spyOn(wrapper.vm.$store, "dispatch");
 
     wrapper.vm.username = "valid_username@mail.com";
@@ -32,12 +47,19 @@ describe("@/views/Register.vue", () => {
 
     await flushPromises();
 
-    await expect(spyDispatch).toHaveBeenCalledWith("auth/register", {
+    const data = {
       username: wrapper.vm.username,
       first_name: wrapper.vm.first_name,
       last_name: wrapper.vm.last_name,
-      password: wrapper.vm.password
-    });
+      password: wrapper.vm.password,
+      confirm_password: wrapper.vm.confirm_password
+    };
+
+    await expect(spyDispatch).toHaveBeenCalledWith("auth/register", data);
+
+    await flushPromises();
+
+    expect(wrapper.vm.$route.name).toBe("Login");
   });
 
   it("all fields are required", async () => {
@@ -134,20 +156,5 @@ describe("@/views/Register.vue", () => {
 });
 
 function mountWithStore() {
-  const actions = {
-    register: jest.fn()
-  };
-
-  return shallowMount(Register, {
-    ...createComponentMocks({
-      store: {
-        auth: {
-          actions
-        }
-      },
-      stubs: {
-        BaseButton
-      }
-    })
-  });
+  return shallowMount(Register, { router, store, stubs: { BaseButton } });
 }

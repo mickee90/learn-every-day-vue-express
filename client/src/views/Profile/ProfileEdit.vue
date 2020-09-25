@@ -149,7 +149,12 @@ export default {
       )
         return;
 
-      await this.updateUser(this.formData);
+      try {
+        await this.updateUser({ ...this.formData });
+      } catch (_) {
+        // @todo handle errors
+        // console.log(error);
+      }
     }
   },
   created() {

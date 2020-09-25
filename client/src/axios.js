@@ -14,6 +14,7 @@ instance.interceptors.response.use(
   response => response,
   error => {
     if (error.response.status === 500 || error.response.status === 400) {
+      // @todo add real error response
       alert("Ops! Something went wrong. Please try again.");
     }
 

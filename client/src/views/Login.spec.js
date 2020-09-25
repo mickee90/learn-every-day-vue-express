@@ -125,14 +125,16 @@ describe("@/views/Login", () => {
 
     await wrapper.vm.$nextTick();
 
-    await flushPromises();
-
     await expect(spyDispatch).toHaveBeenCalledWith("auth/login", {
       username: username.element.value,
       password: password.element.value
     });
 
     await flushPromises();
+
+    // reset form
+    expect(username.element.value).toBe("");
+    expect(password.element.value).toBe("");
 
     // No redirection
     expect(wrapper.vm.$route.name).toBe(startPathName);

@@ -58,50 +58,31 @@ const mutations = {
 
 export const actions = {
   async login({ commit }, { username, password }) {
-    try {
-      const response = await axios.post("/login", { username, password });
+    const { data } = await axios.post("/login", { username, password });
 
-      // @TODO error handling
-      if (!response) return;
+    commit("setUser", { ...data.user });
 
-      commit("setUser", { ...response.data.user });
-
-      router.push({ name: "Posts" });
-    } catch (error) {
-      // @TODO error handling
-      console.log("error");
-    }
+    router.push({ name: "Posts" });
   },
   async logout({ commit }) {
-    const response = await axios.post(
-      "http://localhost:3000/api/v1/logout",
-      {},
-      {
-        withCredentials: true
-      }
-    );
-
-    // @TODO error handling
-    if (!response) return;
+    await axios.post("/logout");
 
     commit("logout");
 
     router.push({ name: "Login" });
   },
   async updateUser({ commit }, payload) {
-    const response = await axios.put("http://localhost:3000/api/v1/users", payload, {
-      withCredentials: true,
-      "Content-Type": "application/json"
-    });
+    const { data } = await axios.put("/users", payload);
 
-    // @TODO error handling
-    if (!response) return;
-
-    commit("setUser", response.data.user);
+    commit("setUser", { ...data.user });
 
     router.push({ name: "Posts" });
   },
-  async register() {}
+  async register({ _ }, payload) {
+    await axios.post("/register", { ...payload, email: payload.username });
+
+    router.push({ name: "Login" });
+  }
 };
 
 export default {

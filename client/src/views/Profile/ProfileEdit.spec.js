@@ -5,6 +5,17 @@ import Vuelidate from "vuelidate";
 import flushPromises from "flush-promises";
 
 import ProfileEdit from "@/views/Profile/ProfileEdit";
+import BaseButton from "@/components/Globals/_base-button.vue";
+import BaseInput from "@/components/Globals/_base-input.vue";
+import BaseLabel from "@/components/Globals/_base-label.vue";
+
+import store from "@/store";
+import { shallowMount } from "@vue/test-utils";
+
+import axios from "@/axios";
+import MockAdapter from "axios-mock-adapter";
+
+import router from "@/router";
 
 Vue.use(Vuelidate);
 
@@ -23,15 +34,19 @@ const defaultUser = {
 
 describe("@/views/Profile/ProfileEdit.vue", () => {
   let wrapper;
-  let state;
+  let mock;
 
   beforeEach(() => {
-    state = {
-      user: defaultUser
-    };
-
-    wrapper = mountWithStore(state);
+    mock = new MockAdapter(axios);
+    store.commit("auth/setUser", defaultUser);
+    wrapper = mountWithStore();
     wrapper.vm.$v.$touch();
+  });
+
+  afterEach(() => {
+    wrapper.destroy();
+    wrapper = null;
+    mock.reset();
   });
 
   it("has a username field", () => {
@@ -216,41 +231,55 @@ describe("@/views/Profile/ProfileEdit.vue", () => {
   });
 
   it("updates the users profile in case of correct inputs", async () => {
+    const mockData = {
+      user: {
+        username: "email@mail.com",
+        first_name: "first_name",
+        last_name: "last_name",
+        email: "email@mail.com",
+        address: "address",
+        city: "city",
+        zip_code: "zip_code",
+        phone: "phone"
+      }
+    };
+    mock.onPut("/users").reply(200, { ...mockData });
+
     const spyOnSubmit = jest.spyOn(wrapper.vm, "onSubmit");
     const spyDispatch = jest.spyOn(wrapper.vm.$store, "dispatch");
 
     const form = wrapper.find("#ProfileEditForm");
 
     const username = wrapper.find("#username");
-    username.element.value = "email@mail.com";
+    username.element.value = mockData.user.username;
     username.trigger("input");
 
     const first_name = wrapper.find("#first_name");
-    first_name.element.value = "first_name";
+    first_name.element.value = mockData.user.first_name;
     first_name.trigger("input");
 
     const last_name = wrapper.find("#last_name");
-    last_name.element.value = "last_name";
+    last_name.element.value = mockData.user.last_name;
     last_name.trigger("input");
 
     const email = wrapper.find("#email");
-    email.element.value = "email@mail.com";
+    email.element.value = mockData.user.email;
     email.trigger("input");
 
     const address = wrapper.find("#address");
-    address.element.value = "address";
+    address.element.value = mockData.user.address;
     address.trigger("input");
 
     const city = wrapper.find("#city");
-    city.element.value = "city";
+    city.element.value = mockData.user.city;
     city.trigger("input");
 
     const zip_code = wrapper.find("#zip_code");
-    zip_code.element.value = "zip_code";
+    zip_code.element.value = mockData.user.zip_code;
     zip_code.trigger("input");
 
     const phone = wrapper.find("#phone");
-    phone.element.value = "phone";
+    phone.element.value = mockData.user.phone;
     phone.trigger("input");
 
     await form.trigger("submit.prevent");
@@ -262,39 +291,19 @@ describe("@/views/Profile/ProfileEdit.vue", () => {
     expect(wrapper.vm.$v.formData.$error).toBe(false);
     expect(spyOnSubmit).toHaveBeenCalled();
 
-    expect(spyDispatch).toHaveBeenCalledWith("auth/updateUser", wrapper.vm.formData);
+    expect(spyDispatch).toHaveBeenCalledWith("auth/updateUser", { ...wrapper.vm.formData });
 
-    // TODO: mock updateUser to edit the state. Requires a api/axios mock?
-
-    // expect(state.user.username).toBe("email@mail.com");
-    // expect(state.user.first_name).toBe("first_name");
-    // expect(state.user.last_name).toBe("last_name");
-    // expect(state.user.email).toBe("email@mail.com");
-    // expect(state.user.address).toBe("address");
-    // expect(state.user.city).toBe("city");
-    // expect(state.user.zip_code).toBe("zip_code");
-    // expect(state.user.phone).toBe("phone");
+    expect(wrapper.vm.$store.getters["auth/getUser"].username).toBe("email@mail.com");
+    expect(wrapper.vm.$store.getters["auth/getUser"].first_name).toBe("first_name");
+    expect(wrapper.vm.$store.getters["auth/getUser"].last_name).toBe("last_name");
+    expect(wrapper.vm.$store.getters["auth/getUser"].email).toBe("email@mail.com");
+    expect(wrapper.vm.$store.getters["auth/getUser"].address).toBe("address");
+    expect(wrapper.vm.$store.getters["auth/getUser"].city).toBe("city");
+    expect(wrapper.vm.$store.getters["auth/getUser"].zip_code).toBe("zip_code");
+    expect(wrapper.vm.$store.getters["auth/getUser"].phone).toBe("phone");
   });
 });
 
-function mountWithStore(state) {
-  const actions = {
-    updateUser: jest.fn()
-  };
-
-  const getters = {
-    getUser: () => defaultUser
-  };
-
-  return mount(ProfileEdit, {
-    ...createComponentMocks({
-      store: {
-        auth: {
-          state,
-          getters,
-          actions
-        }
-      }
-    })
-  });
+function mountWithStore() {
+  return shallowMount(ProfileEdit, { store, router, stubs: { BaseInput, BaseButton, BaseLabel } });
 }

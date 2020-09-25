@@ -20,7 +20,11 @@ userRoutes.post("/login", async function (req: Request, res: Response) {
     });
   }
 
-  if (await !passwordUtils.validatePassword(req.body.password, user.password)) {
+  const validPassword = await passwordUtils.validatePassword(
+    req.body.password,
+    user.password
+  );
+  if (!validPassword) {
     return res.status(404).json({
       success: false,
       message:
@@ -53,6 +57,7 @@ userRoutes.post("/register", validateRegisterUser, async function (
   res: Response,
   next: NextFunction
 ) {
+  console.log("/register");
   const buildUser: User = User.build({
     username: req.body.username,
     email: req.body.username,

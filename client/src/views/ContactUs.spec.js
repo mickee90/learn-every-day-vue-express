@@ -15,6 +15,7 @@ describe("@/views/ContactUs.vue", () => {
     wrapper.vm.$v.$touch();
   });
 
+  // @todo add test and functionality for sending emails
   it("calls onSendForm when all inputs are filled and submit button clicked", async () => {
     const spyOnSendForm = jest.spyOn(wrapper.vm, "onSendForm");
 

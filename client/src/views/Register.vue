@@ -125,12 +125,18 @@ export default {
 
       if (this.$v.$error) return;
 
-      await this.$store.dispatch("auth/register", {
-        username: this.username,
-        first_name: this.first_name,
-        last_name: this.last_name,
-        password: this.password
-      });
+      try {
+        await this.$store.dispatch("auth/register", {
+          username: this.username,
+          first_name: this.first_name,
+          last_name: this.last_name,
+          password: this.password,
+          confirm_password: this.confirm_password
+        });
+      } catch (error) {
+        // @todo handle errors
+        console.log(error);
+      }
     }
   },
   validations: {

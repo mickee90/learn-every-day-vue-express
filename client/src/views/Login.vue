@@ -60,10 +60,17 @@ export default {
 
       if (this.$v.username.$error || this.$v.password.$error) return;
 
-      await this.$store.dispatch("auth/login", {
-        username: this.username,
-        password: this.password
-      });
+      try {
+        await this.$store.dispatch("auth/login", {
+          username: this.username,
+          password: this.password
+        });
+      } catch (_) {
+        this.username = "";
+        this.password = "";
+        // @todo handle errors
+        // console.log(error);
+      }
     }
   },
   created() {
