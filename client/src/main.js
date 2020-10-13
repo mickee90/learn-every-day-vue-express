@@ -4,7 +4,13 @@ import "./registerServiceWorker";
 import Vuelidate from "vuelidate";
 
 import router from "./router";
+
 import store from "./store";
+
+// Saves the store as a global variable while running Cypress tests
+if (window.Cypress) {
+  window.__store__ = store;
+}
 
 import "./assets/styles/index.css";
 
