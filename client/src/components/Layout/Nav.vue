@@ -32,7 +32,7 @@
             <router-link :to="{ name: 'ContactUs' }" class="menu-item ml-3">Contact us</router-link>
           </li>
           <li v-if="isLoggedIn === true" class="pt-6 px-6">
-            <BaseButton class="menu-item" @click.prevent="logout">Logout</BaseButton>
+            <BaseButton class="menu-item" @click.prevent="onLogout">Logout</BaseButton>
           </li>
         </ul>
       </div>
@@ -57,6 +57,10 @@ export default {
     }
   },
   methods: {
+    onLogout() {
+      this.showMenu = false;
+      this.logout();
+    },
     ...mapActions("auth", ["logout"])
   },
   mounted() {
