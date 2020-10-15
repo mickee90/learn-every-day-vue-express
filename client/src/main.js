@@ -7,11 +7,6 @@ import router from "./router";
 
 import store from "./store";
 
-// Saves the store as a global variable while running Cypress tests
-if (window.Cypress) {
-  window.__store__ = store;
-}
-
 import "./assets/styles/index.css";
 
 Vue.use(Vuelidate);
@@ -29,3 +24,8 @@ new Vue({
     this.$store.commit("auth/initStore");
   }
 }).$mount("#app");
+
+// Saves the store as a global variable while running Cypress tests
+if (window.Cypress) {
+  window.__store__ = store;
+}

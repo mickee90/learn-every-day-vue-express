@@ -35,7 +35,7 @@ Cypress.Commands.add("login", ({ username = "tester", password = "password" } = 
       cy.visit("/posts");
     }
   });
-  getStore().then(store => store.commit("auth/setUser", { username, password }));
+  getStore().then(store => store.commit("auth/setUser", { id: 1, username, password }));
 });
 
 Cypress.Commands.add("logout", () => {
@@ -45,4 +45,8 @@ Cypress.Commands.add("logout", () => {
     }
   });
   getStore().then(store => store.commit("auth/logout"));
+});
+
+Cypress.Commands.add("resetPostStore", () => {
+  getStore().then(store => store.commit("posts/setPosts", []));
 });

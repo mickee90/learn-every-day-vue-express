@@ -1,5 +1,3 @@
-import "../support/commands";
-
 describe("Authentication", () => {
   it("login form shows an error on failure", () => {
     cy.visit("/login");
@@ -16,29 +14,28 @@ describe("Authentication", () => {
     cy.location("pathname").should("equal", "/login");
   });
 
-  // @todo WHYYYYY?
-  // it("successful login works redirects to the home page and logging out works", () => {
-  //   cy.server();
-  //   cy.route({
-  //     method: "POST",
-  //     url: "/api/v1/login",
-  //     response: {
-  //       user: {
-  //         username: "username"
-  //       }
-  //     }
-  //   }).as("login");
-  //   cy.visit("/login");
+  it("successful login works redirects to the home page and logging out works", () => {
+    cy.server();
+    cy.route({
+      method: "POST",
+      url: "/api/v1/login",
+      response: {
+        user: {
+          username: "username"
+        }
+      }
+    }).as("login");
+    cy.visit("/login");
 
-  //   cy.get('input[id="username"]').type("admin");
-  //   cy.get('input[id="password"]').type("password");
+    cy.get('input[id="username"]').type("admin@test.com");
+    cy.get('input[id="password"]').type("password");
 
-  //   cy.contains("button", "Login").click();
+    cy.contains("button", "Login").click();
 
-  //   cy.wait("@login");
+    cy.wait("@login");
 
-  //   cy.location("pathname").should("equal", "/posts");
-  // });
+    cy.location("pathname").should("equal", "/posts");
+  });
 
   it("logout link logs the user out when logged in", () => {
     cy.login();
