@@ -29,14 +29,23 @@
 
 import { getStore } from "./utils";
 
-Cypress.Commands.add("login", ({ username = "tester", password = "password" } = {}) => {
-  cy.location("pathname").then(pathname => {
-    if (pathname === "/login") {
-      cy.visit("/posts");
-    }
-  });
-  getStore().then(store => store.commit("auth/setUser", { id: 1, username, password }));
+Cypress.Commands.add("login", ({ username = "testuser@mail.com", password = "password" } = {}) => {
+  cy.visit("/login");
+
+  cy.get('input[id="username"]').type("testuser@mail.com");
+  cy.get('input[id="password"]').type("password");
+
+  cy.contains("button", "Login").click();
 });
+
+// Cypress.Commands.add("login", ({ username = "tester", password = "password" } = {}) => {
+//   cy.location("pathname").then(pathname => {
+//     if (pathname === "/login") {
+//       cy.visit("/posts");
+//     }
+//   });
+//   getStore().then(store => store.commit("auth/setUser", { id: 1, username, password }));
+// });
 
 Cypress.Commands.add("logout", () => {
   cy.location("pathname").then(pathname => {
