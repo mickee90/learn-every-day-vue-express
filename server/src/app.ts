@@ -33,7 +33,19 @@ app.use(helmet());
 // Some of the defaults is:
 // origin: *
 // methods: GET,HEAD,PUT,PATCH,POST,DELETE
-app.use(cors({ credentials: true, origin: "http://localhost:8080" }));
+var whitelist = ["http://localhost:8080", "http://localhost:8081"];
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+};
+app.use(cors(corsOptions));
+// app.use(cors({ credentials: true, origin: "http://localhost:8080" }));
 
 // Transform incoming request data to json
 app.use(express.json());
