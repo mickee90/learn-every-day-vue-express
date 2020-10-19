@@ -8,7 +8,8 @@
     "watch": "tsc --watch",
     "start-dev": "nodemon dist/app.js",
     "compile": "tsc && node dist/app.js",
-    "dev": "nodemon -e ts  --exec \"npm run compile\""
+    "compile-testing": "tsc && NODE_ENV=test PORT=3333 node dist/app.js",
+    "dev": "nodemon -e ts --exec \"npm run compile\""
   },
   "author": "Mikael Nilsson",
   "license": "ISC",

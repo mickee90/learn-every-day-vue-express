@@ -56,6 +56,9 @@ Cypress.Commands.add("logout", () => {
   getStore().then(store => store.commit("auth/logout"));
 });
 
+Cypress.Commands.add("resetDatabase", () => {
+  cy.exec("npm run reset:database");
+});
 Cypress.Commands.add("resetPostStore", () => {
   getStore().then(store => store.commit("posts/setPosts", []));
 });

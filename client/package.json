@@ -9,7 +9,8 @@
     "watch:test:unit": "vue-cli-service test:unit --watch",
     "test:e2e": "vue-cli-service test:e2e",
     "test:e2e:headless": "vue-cli-service test:e2e --headless",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "reset:database": "cd ../server && sequelize-cli db:seed:undo:all --env test && sequelize-cli db:seed:all --env test"
   },
   "dependencies": {
     "axios": "^0.19.2",

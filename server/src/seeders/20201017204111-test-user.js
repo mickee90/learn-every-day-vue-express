@@ -9,12 +9,12 @@ module.exports = {
       [
         {
           id: uuidv4(),
-          user_type_id: 1,
-          username: "admin@led.com",
-          password: passwordUtils.generateHash("ledpassword"),
-          first_name: "Led",
-          last_name: "Admin",
-          email: "admin@led.com",
+          user_type_id: 2,
+          username: "testuser@mail.com",
+          password: passwordUtils.generateHash("password"),
+          first_name: "Test",
+          last_name: "User",
+          email: "testuser@mail.com",
           disabled: false,
           banned: false,
           country_id: 1,

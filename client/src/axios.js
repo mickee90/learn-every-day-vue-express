@@ -1,9 +1,16 @@
 import axios from "axios";
 import router from "@/router/index";
 
-const instance = axios.create({
-  baseURL: "http://localhost:3000/api/v1"
-});
+let instance;
+if (window.Cypress) {
+  instance = axios.create({
+    baseURL: "http://localhost:3333/api/v1"
+  });
+} else {
+  instance = axios.create({
+    baseURL: "http://localhost:3000/api/v1"
+  });
+}
 
 instance.defaults.headers.get["Accepts"] = "application/json";
 
