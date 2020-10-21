@@ -21,6 +21,7 @@ export class User extends Model {
   public city: string | null;
   public email!: string | null;
   public phone: string | null;
+  public avatar: string | null;
   public disabled!: boolean;
   public banned!: boolean;
   public country_id!: number;
@@ -92,6 +93,10 @@ User.init(
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
       defaultValue: 1,
+    },
+    avatar: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
     },
     createdAt: {
       type: DataTypes.DATE,

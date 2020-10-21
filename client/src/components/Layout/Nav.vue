@@ -81,6 +81,7 @@ export default {
   padding: 30px;
 }
 #menu-btn {
+  display: flex;
   background: transparent;
   border: 0;
   outline: 0;

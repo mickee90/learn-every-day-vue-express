@@ -1,6 +1,7 @@
 // Simulates it's a module and will remove the error of colliding imports in other files (e.g modals)
 export {};
 
+import * as path from "path";
 const express = require("express");
 const morgan = require("morgan");
 const helmet = require("helmet");
@@ -50,6 +51,9 @@ app.use(cors(corsOptions));
 // Transform incoming request data to json
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+app.use(express.static(path.join(__dirname, "uploads")));
+app.use("/avatars", express.static(path.join(__dirname, "uploads", "avatars")));
 
 // ROUTES
 app.use(

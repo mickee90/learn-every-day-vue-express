@@ -47,6 +47,7 @@ userRoutes.post("/login", async function (req: Request, res: Response) {
           zip_code: user.zip_code,
           city: user.city,
           phone: user.phone,
+          avatar: user.avatar,
         },
       });
   }

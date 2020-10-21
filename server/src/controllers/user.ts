@@ -91,6 +91,39 @@ exports.editPassword = async (req: Request, res: Response, next) => {
   }
 };
 
+exports.uploadAvatar = async (req: Request, res: Response, next) => {
+  try {
+    const user: User = await User.findByPk(req.user.id);
+
+    if (!user) {
+      const error = new Error("The user cannot be found");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    if (!req.file) {
+      const error = new Error("'No file uploaded");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    console.log(req.file);
+    user.avatar = req.file.filename;
+
+    const savedUser = await user.save();
+
+    if (!savedUser) {
+      const error = new Error("The user could not be updated");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    res.status(200).json({ user: apiUserObject(user) });
+  } catch (error) {
+    next(error);
+  }
+};
+
 function apiUserObject(user) {
   return {
     username: user.username,
@@ -102,5 +135,6 @@ function apiUserObject(user) {
     email: user.email,
     phone: user.phone || "",
     country_id: user.country_id || 1,
+    avatar: user.avatar || "",
   };
 }

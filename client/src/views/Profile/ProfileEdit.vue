@@ -6,7 +6,50 @@
           Please let us know if you have any questions or suggestions on how to improve Learn Every
           Day!
         </div>
-        <form id="ProfileEditForm" :key="resetFormKey" @submit.prevent="onSubmit">
+        <form
+          id="ProfileEditForm"
+          :key="resetFormKey"
+          @submit.prevent="onSubmit"
+          enctype="multipart/form-data"
+        >
+          <div class="mb-10">
+            <label for="avatarFileInput" class="w-100">
+              <div class="m-auto flex justify-center" style="max-width: 200px;">
+                <img
+                  id="avatar"
+                  :src="formData.avatar"
+                  :alt="formData.first_name"
+                  class="avatar max-w-full"
+                  v-if="formData.avatar !== null && formData.avatar !== undefined"
+                />
+                <!-- <font-awesome-icon icon="handshake" class="text-6xl" v-else /> -->
+              </div>
+              <div class="text-blue-500 cursor-pointer text-center hover:underline">
+                <input
+                  class="hidden"
+                  type="file"
+                  ref="file"
+                  accept="image/*"
+                  id="avatarFileInput"
+                  @change="onChosenFile"
+                />
+                Byt logotyp/profilbild
+              </div>
+            </label>
+            <div class="chosen-avatar-box" v-if="chosenAvatar !== ''">
+              <span>Välj bild: {{ chosenAvatar.name }}</span>
+              <span>
+                <button
+                  @click.prevent="onAvatarUpload"
+                  class="btn btn-primary"
+                  :disabled="chosenAvatar === '' || chosenAvatar === undefined"
+                >
+                  Ladda upp
+                </button>
+              </span>
+            </div>
+          </div>
+
           <div class="flex flex-wrap -mx-3 mb-6">
             <div class="w-full px-3">
               <BaseLabel id="username" required>Username</BaseLabel>
@@ -99,8 +142,7 @@
             </div>
             <div class="w-full md:w-1/2 px-3">
               <BaseLabel id="phone">Phone number</BaseLabel>
-              <input
-                type="text"
+              <BaseInput
                 id="phone"
                 placeholder="Phone number"
                 v-model="formData.phone"
@@ -109,10 +151,10 @@
             </div>
           </div>
           <div class="flex items-center justify-between">
-            <BaseButton type="submit" @click.prevent="onSubmit">Save</BaseButton>
             <BaseButton type="submit" class="btn-yellow" @click.prevent="resetFormKey++"
               >Cancel</BaseButton
             >
+            <BaseButton type="submit" @click.prevent="onSubmit">Save</BaseButton>
           </div>
         </form>
       </div>
@@ -128,11 +170,13 @@ export default {
   data() {
     return {
       formData: {
+        avatar: "",
         username: "",
         first_name: "",
         last_name: "",
         email: ""
       },
+      chosenAvatar: "",
       resetFormKey: 1
     };
   },
@@ -155,10 +199,44 @@ export default {
         // @todo handle errors
         // console.log(error);
       }
+    },
+    onChosenFile() {
+      if (this.$refs.file.files[0] === undefined) {
+        return false;
+      }
+      this.chosenAvatar = this.$refs.file.files[0];
+    },
+
+    onAvatarUpload() {
+      if (this.chosenAvatar === "") {
+        alert("Choose an image");
+        return;
+      }
+
+      this.uploadAvatar(this.chosenAvatar);
+    },
+
+    async uploadAvatar(file = null) {
+      if (file === null) {
+        alert("Somethings wrong! Try again");
+        return;
+      }
+
+      console.log(file);
+
+      let formData = new FormData();
+      formData.append("avatar", file);
+
+      if (this.$store.dispatch("auth/updateAvatar", formData)) {
+        this.chosenAvatar = "";
+      } else {
+        console.log("fail");
+      }
     }
   },
   created() {
     this.formData = { ...this.$store.getters["auth/getUser"] };
+    console.log(this.formData);
   },
   validations: {
     formData: {
