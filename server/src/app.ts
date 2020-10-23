@@ -30,6 +30,13 @@ app.use(morgan("common"));
 // Middleware which sets various HTTP headers for protection
 app.use(helmet());
 
+app.use(express.static(path.join(__dirname, "uploads")));
+app.use(
+  "/avatars",
+  express.static(path.join(__dirname, "uploads", "avatars")),
+  cors()
+);
+
 // Middleware which enables cors with various options
 // Some of the defaults is:
 // origin: *
@@ -51,9 +58,6 @@ app.use(cors(corsOptions));
 // Transform incoming request data to json
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
-app.use(express.static(path.join(__dirname, "uploads")));
-app.use("/avatars", express.static(path.join(__dirname, "uploads", "avatars")));
 
 // ROUTES
 app.use(

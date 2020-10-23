@@ -1,5 +1,6 @@
 import { User } from "../models/User";
 const passwordUtils = require("../utils/passwordUtils");
+const fileUtils = require("../utils/fileUtils");
 import { Request, Response } from "express";
 
 exports.getUser = async (req: Request, res: Response) => {
@@ -107,7 +108,8 @@ exports.uploadAvatar = async (req: Request, res: Response, next) => {
       throw error;
     }
 
-    console.log(req.file);
+    fileUtils.deleteFile(user.avatar);
+
     user.avatar = req.file.filename;
 
     const savedUser = await user.save();

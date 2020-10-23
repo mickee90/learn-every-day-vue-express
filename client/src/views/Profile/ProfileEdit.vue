@@ -17,7 +17,7 @@
               <div class="m-auto flex justify-center" style="max-width: 200px;">
                 <img
                   id="avatar"
-                  :src="formData.avatar"
+                  :src="avatarUrl"
                   :alt="formData.first_name"
                   class="avatar max-w-full"
                   v-if="formData.avatar !== null && formData.avatar !== undefined"
@@ -180,6 +180,11 @@ export default {
       resetFormKey: 1
     };
   },
+  computed: {
+    avatarUrl: function() {
+      return `${process.env.VUE_APP_BASE_AVATAR_URL}/${this.formData.avatar}`;
+    }
+  },
   methods: {
     ...mapActions("auth", ["updateUser"]),
     async onSubmit() {
@@ -222,13 +227,13 @@ export default {
         return;
       }
 
-      console.log(file);
-
       let formData = new FormData();
       formData.append("avatar", file);
 
-      if (this.$store.dispatch("auth/updateAvatar", formData)) {
+      const result = await this.$store.dispatch("auth/updateAvatar", formData);
+      if (result) {
         this.chosenAvatar = "";
+        this.formData = { ...this.$store.getters["auth/getUser"] };
       } else {
         console.log("fail");
       }
@@ -236,7 +241,6 @@ export default {
   },
   created() {
     this.formData = { ...this.$store.getters["auth/getUser"] };
-    console.log(this.formData);
   },
   validations: {
     formData: {

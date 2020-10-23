@@ -41,9 +41,6 @@ const mutations = {
     localStorage.setItem("led_user", JSON.stringify(user));
     localStorage.setItem("led_isLoggedIn", true);
   },
-  setAvatar(state, avatar) {
-    state.user = { ...state.user, avatar };
-  },
   logout(state) {
     state.user = {};
     localStorage.removeItem("led_user");
@@ -81,14 +78,14 @@ export const actions = {
 
     router.push({ name: "Posts" });
   },
-  async updateAvatar({ commit }, payload) {
+  async updateAvatar({ state, commit }, payload) {
     const { data } = await axios.post("/users/avatar", payload, {
       headers: {
         "Content-Type": "multipart/form-data"
       }
     });
 
-    commit("setAvatar", { ...data.avatar });
+    commit("setUser", { ...state.user, avatar: data.user.avatar });
 
     return true;
   },
