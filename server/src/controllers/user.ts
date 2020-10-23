@@ -108,7 +108,12 @@ exports.uploadAvatar = async (req: Request, res: Response, next) => {
       throw error;
     }
 
-    fileUtils.deleteFile(user.avatar);
+    const deleteFile = fileUtils.deleteFile(user.avatar);
+    if (!deleteFile) {
+      const error = new Error("The avatar could not be deleted");
+      error.statusCode = 500;
+      throw error;
+    }
 
     user.avatar = req.file.filename;
 
