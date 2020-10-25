@@ -67,7 +67,7 @@ import { getStore } from "../support/utils";
 describe("Create Post", () => {
   beforeEach(() => {
     cy.visit("/login");
-    cy.resetDatabase();
+    // cy.resetDatabase();
   });
 
   it("redirects back and shows the newly created Post", () => {

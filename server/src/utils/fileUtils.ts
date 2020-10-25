@@ -6,9 +6,7 @@ const deleteFile = (filename) => {
 
   if (fs.existsSync(filePath)) {
     fs.unlink(filePath, (err) => {
-      if (err) return false;
-
-      return true;
+      return err ? false : true;
     });
   }
 

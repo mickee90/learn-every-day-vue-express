@@ -30,30 +30,31 @@ app.use(morgan("common"));
 // Middleware which sets various HTTP headers for protection
 app.use(helmet());
 
-app.use(express.static(path.join(__dirname, "uploads")));
-app.use(
-  "/avatars",
-  express.static(path.join(__dirname, "uploads", "avatars")),
-  cors()
-);
+// app.use(express.static(path.join(__dirname, "uploads")));
+// app.use(
+//   "/avatars",
+//   express.static(path.join(__dirname, "uploads", "avatars")),
+//   cors()
+// );
 
 // Middleware which enables cors with various options
 // Some of the defaults is:
 // origin: *
 // methods: GET,HEAD,PUT,PATCH,POST,DELETE
-var whitelist = ["http://localhost:8080", "http://localhost:8081"];
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-};
-app.use(cors(corsOptions));
-// app.use(cors({ credentials: true, origin: "http://localhost:8080" }));
+// var whitelist = ["http://localhost:8080", "http://localhost:8081", "http://localhost:3000", "http://localhost:3333"];
+// var corsOptions = {
+//   origin: function (origin, callback) {
+//     if (whitelist.indexOf(origin) !== -1) {
+//       callback(null, true);
+//     } else {
+//       console.log(origin);
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   },
+//   credentials: true,
+// };
+// app.use(cors(corsOptions));
+app.use(cors({ credentials: true, origin: "http://localhost:8080" }));
 
 // Transform incoming request data to json
 app.use(express.json());
