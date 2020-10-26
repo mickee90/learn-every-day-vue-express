@@ -5,7 +5,8 @@
     </div>
     <div v-else-if="posts.length === 0">You have not created any posts yet.</div>
     <div v-else>
-      <PostItem v-for="post in posts" :key="post.id" :post="post"></PostItem>
+      <FilterBox :posts="posts" @postListSorted="onSortedPosts" />
+      <PostItem v-for="post in sortedPosts" :key="post.id" :post="post"></PostItem>
     </div>
     <div class="flex justify-end">
       <router-link
@@ -19,20 +20,30 @@
 </template>
 <script>
 import PostItem from "./PostItem";
+import FilterBox from "../../components/Layout/FilterBox";
 import { mapState, mapActions } from "vuex";
 import BounceLoader from "vue-spinner/src/BounceLoader.vue";
 
 export default {
-  components: { PostItem, BounceLoader },
+  components: { PostItem, BounceLoader, FilterBox },
+  data() {
+    return {
+      sortedPosts: []
+    }
+  },
   computed: {
     ...mapState("auth", ["user", "isLoggedIn"]),
-    ...mapState("posts", ["posts"])
+    ...mapState("posts", ["posts"]),
   },
   methods: {
-    ...mapActions("posts", ["init"])
+    ...mapActions("posts", ["init"]),
+    onSortedPosts(value) {
+      this.sortedPosts = [...value];
+    }
   },
   async created() {
     this.init();
+    this.sortedPosts = this.posts;
   }
 };
 </script>
