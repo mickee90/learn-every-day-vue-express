@@ -7,6 +7,7 @@
     as distinct and create the component again.
     -->
       <RouterView :key="$route.fullPath" />
+      <FlashMessage :position="'right bottom'"></FlashMessage>
     </div>
   </div>
 </template>

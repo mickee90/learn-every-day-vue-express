@@ -13,6 +13,7 @@
     "reset:database": "cd ../server && sequelize-cli db:seed:undo:all --env test && sequelize-cli db:seed:all --env test"
   },
   "dependencies": {
+    "@smartweb/vue-flash-message": "^0.6.10",
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
     "lodash": "^4.17.20",

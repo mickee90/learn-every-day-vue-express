@@ -1,5 +1,6 @@
 import axios from "axios";
 import router from "@/router/index";
+import { baseMessage } from "@/helpers/FlashMessage";
 
 let instance;
 if (window.Cypress) {
@@ -20,9 +21,43 @@ instance.defaults.withCredentials = true;
 instance.interceptors.response.use(
   response => response,
   error => {
-    if (error.response.status === 500 || error.response.status === 400) {
-      // @todo add real error response
-      alert("Ops! Something went wrong. Please try again.");
+    if (error.response.status === 500) {
+      window.globalVue.flashMessage.error(
+        baseMessage({
+          title: "Error",
+          message: "Ops! Something is wrong.. Please try again."
+        })
+      );
+      return;
+    }
+
+    if (error.response.status === 400) {
+      const error_messages = error.response.data.error_message;
+      let errors = [];
+
+      if (typeof error_messages !== "object") {
+        errors["errors"] = error_messages;
+      } else {
+        errors = error_messages;
+      }
+
+      Object.keys(errors).forEach(key => {
+        window.globalVue.flashMessage.error(
+          baseMessage({
+            message: errors[key][0]
+          })
+        );
+      });
+    }
+
+    if (error.response.status === 404) {
+      window.globalVue.flashMessage.error(
+        baseMessage({
+          title: "Error",
+          message: "Ops! Something is wrong.. Please try again."
+        })
+      );
+      return;
     }
 
     if (error.response.status === 401) {

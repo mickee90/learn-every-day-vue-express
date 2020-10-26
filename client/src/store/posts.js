@@ -1,5 +1,6 @@
 import axios from "@/axios";
 import router from "@/router";
+import { baseMessage } from "@/helpers/FlashMessage";
 
 const getters = {
   getPosts(state) {
@@ -19,8 +20,15 @@ const actions = {
   async init({ commit }) {
     const response = await axios.get("/posts");
 
-    // @TODO error handling
-    if (!response) return;
+    if (!response) {
+      this.flashMessage.error(
+        baseMessage({
+          title: "Error",
+          message: "Ops! Something went wrong. Please try again"
+        })
+      );
+      return false;
+    }
 
     commit("setPosts", response.data.posts);
   },
@@ -33,8 +41,15 @@ const actions = {
       content: payload.content
     });
 
-    // @TODO error handling
-    if (!response) return;
+    if (!response) {
+      this.flashMessage.error(
+        baseMessage({
+          title: "Error",
+          message: "Ops! Something went wrong. Please try again"
+        })
+      );
+      return false;
+    }
 
     router.push({
       name: "PostShow",
@@ -47,8 +62,15 @@ const actions = {
 
     const response = await axios.get(`/posts/${id}`);
 
-    // @TODO error handling
-    if (!response) return;
+    if (!response) {
+      this.flashMessage.error(
+        baseMessage({
+          title: "Error",
+          message: "Ops! Something went wrong. Please try again"
+        })
+      );
+      return false;
+    }
 
     commit("setPost", response.data.post);
   },
@@ -56,8 +78,15 @@ const actions = {
   async deletePost({ commit, state }) {
     const response = await axios.delete(`/posts/${state.post.id}`);
 
-    // @TODO error handling
-    if (!response) return;
+    if (!response) {
+      this.flashMessage.error(
+        baseMessage({
+          title: "Error",
+          message: "Ops! Something went wrong. Please try again"
+        })
+      );
+      return false;
+    }
 
     commit("setPost", null);
 
@@ -71,8 +100,15 @@ const actions = {
       content: payload.content
     });
 
-    // @TODO error handling
-    if (!response) return;
+    if (!response) {
+      this.flashMessage.error(
+        baseMessage({
+          title: "Error",
+          message: "Ops! Something went wrong. Please try again"
+        })
+      );
+      return false;
+    }
 
     commit("setPost", response.data.post);
 

@@ -43,6 +43,7 @@ const mutations = {
   },
   logout(state) {
     state.user = {};
+    state.isLoggedIn = false;
     localStorage.removeItem("led_user");
     localStorage.removeItem("led_isLoggedIn");
   },
@@ -75,8 +76,6 @@ export const actions = {
     const { data } = await axios.put("/users", payload);
 
     commit("setUser", { ...data.user });
-
-    router.push({ name: "Posts" });
   },
   async updateAvatar({ state, commit }, payload) {
     const { data } = await axios.post("/users/avatar", payload, {

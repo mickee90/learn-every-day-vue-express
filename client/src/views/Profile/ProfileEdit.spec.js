@@ -302,6 +302,75 @@ describe("@/views/Profile/ProfileEdit.vue", () => {
     expect(wrapper.vm.$store.getters["auth/getUser"].zip_code).toBe("zip_code");
     expect(wrapper.vm.$store.getters["auth/getUser"].phone).toBe("phone");
   });
+
+  // @todo how to test the flash message?
+  // it("shows success message when updating the profile successfully", async () => {
+
+  //   const mockData = {
+  //     user: {
+  //       username: "email@mail.com",
+  //       first_name: "first_name",
+  //       last_name: "last_name",
+  //       email: "email@mail.com",
+  //       address: "address",
+  //       city: "city",
+  //       zip_code: "zip_code",
+  //       phone: "phone"
+  //     }
+  //   };
+  //   mock.onPut("/users").reply(200, { ...mockData });
+
+  //   const spyOnSubmit = jest.spyOn(wrapper.vm, "onSubmit");
+  //   const spyDispatch = jest.spyOn(wrapper.vm.$store, "dispatch");
+
+  //   const form = wrapper.find("#ProfileEditForm");
+
+  //   const username = wrapper.find("#username");
+  //   username.element.value = mockData.user.username;
+  //   username.trigger("input");
+
+  //   const first_name = wrapper.find("#first_name");
+  //   first_name.element.value = mockData.user.first_name;
+  //   first_name.trigger("input");
+
+  //   const last_name = wrapper.find("#last_name");
+  //   last_name.element.value = mockData.user.last_name;
+  //   last_name.trigger("input");
+
+  //   const email = wrapper.find("#email");
+  //   email.element.value = mockData.user.email;
+  //   email.trigger("input");
+
+  //   const address = wrapper.find("#address");
+  //   address.element.value = mockData.user.address;
+  //   address.trigger("input");
+
+  //   const city = wrapper.find("#city");
+  //   city.element.value = mockData.user.city;
+  //   city.trigger("input");
+
+  //   const zip_code = wrapper.find("#zip_code");
+  //   zip_code.element.value = mockData.user.zip_code;
+  //   zip_code.trigger("input");
+
+  //   const phone = wrapper.find("#phone");
+  //   phone.element.value = mockData.user.phone;
+  //   phone.trigger("input");
+
+  //   await form.trigger("submit.prevent");
+
+  //   await wrapper.vm.$nextTick();
+
+  //   await flushPromises();
+
+  //   expect(wrapper.vm.$v.formData.$error).toBe(false);
+  //   expect(spyOnSubmit).toHaveBeenCalled();
+
+  //   expect(spyDispatch).toHaveBeenCalledWith("auth/updateUser", { ...wrapper.vm.formData });
+
+  //   await wrapper.vm.$nextTick();
+  //   expect(wrapper.text()).toContain("Successfully updated");
+  // });
 });
 
 function mountWithStore() {

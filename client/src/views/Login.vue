@@ -46,6 +46,7 @@
 
 <script>
 import { required, email } from "vuelidate/lib/validators";
+import { baseMessage } from "@/helpers/FlashMessage"
 
 export default {
   data() {
@@ -68,8 +69,7 @@ export default {
       } catch (_) {
         this.username = "";
         this.password = "";
-        // @todo handle errors
-        // console.log(error);
+        this.flashMessage.error(baseMessage({title: "Login failed", message: 'Please provide valid login credentials'}));
       }
     }
   },

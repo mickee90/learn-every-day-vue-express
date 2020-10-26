@@ -2,10 +2,6 @@
   <div class="lg:max-w-v-1/2 max-w-v-9/10 mx-auto">
     <div class="content">
       <div class="bg-white m-auto max-w-lg px-16 pb-16 pt-8 rounded-md w-full">
-        <div class="pb-8">
-          Please let us know if you have any questions or suggestions on how to improve Learn Every
-          Day!
-        </div>
         <form
           id="ProfileEditForm"
           :key="resetFormKey"
@@ -165,6 +161,7 @@
 <script>
 import { mapActions } from "vuex";
 import { required, email } from "vuelidate/lib/validators";
+import { baseMessage } from "@/helpers/FlashMessage"
 
 export default {
   data() {
@@ -200,9 +197,9 @@ export default {
 
       try {
         await this.updateUser({ ...this.formData });
+        this.flashMessage.success(baseMessage({title: "Profile updated"}));
       } catch (_) {
-        // @todo handle errors
-        // console.log(error);
+        this.flashMessage.error(baseMessage({title: "Updating profile failed"}));
       }
     },
     onChosenFile() {
@@ -234,8 +231,9 @@ export default {
       if (result) {
         this.chosenAvatar = "";
         this.formData = { ...this.$store.getters["auth/getUser"] };
+        this.flashMessage.success(baseMessage({title: "Avatar updated"}));
       } else {
-        console.log("fail");
+        this.flashMessage.error(baseMessage({title: "Updating avatar failed"}));
       }
     }
   },
