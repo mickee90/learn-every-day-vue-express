@@ -30,6 +30,7 @@ describe("@/views/Posts/Posts.vue", () => {
 
   it("Lists correct number of posts", async () => {
     state.posts = posts;
+    wrapper.vm.sortedPosts = posts;
     await wrapper.vm.$nextTick();
 
     expect(wrapper.findAll(".post-item").length).toBe(3);

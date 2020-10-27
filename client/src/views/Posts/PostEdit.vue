@@ -8,14 +8,14 @@
         <BaseLabel id="title" required>Title</BaseLabel>
         <BaseInput
           id="title"
-          :class="{ 'border-red-500 mb-3': $v.title.$error }"
+          :class="{ 'border-red-500 mb-3': $v.post.title.$error }"
           required
           placeholder="Title"
           autocomplete="title"
           autofocus
           v-model="post.title"
         />
-        <p v-if="$v.title.$error" class="text-red-500 text-xs italic">Enter a title.</p>
+        <p v-if="$v.post.title.$error" class="text-red-500 text-xs italic">Enter a title.</p>
       </div>
 
       <div class="mb-4">
@@ -24,7 +24,7 @@
           id="published_date"
           type="date"
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          :class="{ 'border-red-500 mb-3': $v.published_date.$error }"
+          :class="{ 'border-red-500 mb-3': $v.post.published_date.$error }"
           required
           placeholder="Date"
           autocomplete="date"
@@ -32,7 +32,7 @@
           :value="formatPublishedDate()"
           @change="event => (post.published_date = event.target.value)"
         />
-        <p v-if="$v.published_date.$error" class="text-red-500 text-xs italic">Enter a date.</p>
+        <p v-if="$v.post.published_date.$error" class="text-red-500 text-xs italic">Enter a date.</p>
       </div>
 
       <div class="mb-4">
@@ -40,12 +40,12 @@
         <textarea
           id="content"
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          :class="{ 'border-red-500 mb-3': $v.content.$error }"
+          :class="{ 'border-red-500 mb-3': $v.post.content.$error }"
           required
           v-model="post.content"
           rows="10"
         ></textarea>
-        <p v-if="$v.content.$error" class="text-red-500 text-xs italic">Enter content.</p>
+        <p v-if="$v.post.content.$error" class="text-red-500 text-xs italic">Enter content.</p>
       </div>
     </div>
     <div class="mt-6 text-right border-t pt-3">
@@ -70,6 +70,16 @@ export default {
       return fullDate(this.post.published_date);
     },
     async onSave() {
+      // @TODO validation
+      this.$v.$touch();
+
+      if (
+        this.$v.post.title.$error ||
+        this.$v.post.published_date.$error ||
+        this.$v.post.content.$error
+      )
+        return;
+
       this.editPost({
         id: this.post.id,
         title: this.post.title,
@@ -85,14 +95,16 @@ export default {
     this.fetchPost();
   },
   validations: {
-    title: {
-      required
-    },
-    published_date: {
-      required
-    },
-    content: {
-      required
+    post: {
+      title: {
+        required
+      },
+      published_date: {
+        required
+      },
+      content: {
+        required
+      }
     }
   }
 };

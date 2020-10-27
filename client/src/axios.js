@@ -31,20 +31,13 @@ instance.interceptors.response.use(
       return;
     }
 
-    if (error.response.status === 400) {
-      const error_messages = error.response.data.error_message;
-      let errors = [];
+    if (error.response.status === 400 || error.response.status === 422) {
+      const errors = error.response.data.errors;
 
-      if (typeof error_messages !== "object") {
-        errors["errors"] = error_messages;
-      } else {
-        errors = error_messages;
-      }
-
-      Object.keys(errors).forEach(key => {
+      errors.forEach(error => {
         window.globalVue.flashMessage.error(
           baseMessage({
-            message: errors[key][0]
+            message: error["msg"]
           })
         );
       });

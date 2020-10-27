@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuelidate from "vuelidate";
+import FlashMessage from "@smartweb/vue-flash-message";
 
 // This makes sure any active promises are resolved before continuing execution
 import flushPromises from "flush-promises";
@@ -18,6 +19,7 @@ import MockAdapter from "axios-mock-adapter";
 import router from "@/router";
 
 Vue.use(Vuelidate);
+Vue.use(FlashMessage);
 
 const defaultUser = {
   username: "johndoe@mail.com",

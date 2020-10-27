@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuelidate from "vuelidate";
+import FlashMessage from "@smartweb/vue-flash-message";
 
 import Login from "@/views/Login";
 import BaseButton from "@/components/Globals/_base-button.vue";
@@ -17,6 +18,7 @@ import MockAdapter from "axios-mock-adapter";
 import router from "@/router";
 
 Vue.use(Vuelidate);
+Vue.use(FlashMessage);
 
 describe("@/views/Login", () => {
   let wrapper;

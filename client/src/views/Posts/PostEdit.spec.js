@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuelidate from "vuelidate";
+import FlashMessage from "@smartweb/vue-flash-message";
 
 import PostEdit from "@/views/Posts/PostEdit.vue";
 import BaseButton from "@/components/Globals/_base-button.vue";
@@ -9,6 +10,7 @@ import BaseInput from "@/components/Globals/_base-input.vue";
 import flushPromises from "flush-promises";
 
 Vue.use(Vuelidate);
+Vue.use(FlashMessage);
 
 describe("@/views/Posts/PostEdit.vue", () => {
   let wrapper;
@@ -25,30 +27,15 @@ describe("@/views/Posts/PostEdit.vue", () => {
     wrapper.vm.$v.$touch();
   });
 
+  afterEach(() => {
+    wrapper.destroy();
+    wrapper = null;
+  });
+
   it("Shows title, date and content", () => {
     expect(wrapper.find("#title").element.value).toEqual(post.title);
     expect(wrapper.find("#published_date").element.value).toEqual(display_date_format);
     expect(wrapper.find("#content").element.value).toEqual(post.content);
-  });
-
-  it("Requires all fields", () => {
-    const title = wrapper.find("#title");
-    const published_date = wrapper.find("#published_date");
-    const content = wrapper.find("#content");
-
-    title.element.value = "";
-    published_date.element.value = "";
-    content.element.value = "";
-
-    title.trigger("input");
-    published_date.trigger("input");
-    content.trigger("input");
-
-    wrapper.vm.$nextTick();
-
-    expect(wrapper.vm.$v.title.$error).toBe(true);
-    expect(wrapper.vm.$v.published_date.$error).toBe(true);
-    expect(wrapper.vm.$v.content.$error).toBe(true);
   });
 
   it("Dispatch vuex editPost on save", async () => {
@@ -66,6 +53,26 @@ describe("@/views/Posts/PostEdit.vue", () => {
       published_date: wrapper.vm.post.published_date,
       content: wrapper.vm.post.content
     });
+  });
+
+  it("Requires all fields", () => {
+    const title = wrapper.find("#title");
+    const published_date = wrapper.find("#published_date");
+    const content = wrapper.find("#content");
+
+    title.element.value = "";
+    published_date.element.value = "";
+    content.element.value = "";
+
+    title.trigger("input");
+    published_date.trigger("change");
+    content.trigger("input");
+
+    wrapper.vm.$nextTick();
+
+    expect(wrapper.vm.$v.post.title.$error).toBe(true);
+    expect(wrapper.vm.$v.post.published_date.$error).toBe(true);
+    expect(wrapper.vm.$v.post.content.$error).toBe(true);
   });
   it("Has a cancel button", () => {
     expect(wrapper.text()).toContain("Cancel");
