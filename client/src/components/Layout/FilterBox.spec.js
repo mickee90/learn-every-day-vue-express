@@ -13,19 +13,7 @@ describe("@/components/Layout/FilterBox.vue", () => {
     ];
 
     wrapper = shallowMount(FilterBox, {
-      propsData: { posts },
-      data: function() {
-        return {
-          currentSort: 1,
-          sortItems: [
-            { id: 1, title: "Date - Desc", sortProp: "published_date", sortType: "desc" },
-            { id: 2, title: "Date - Asc", sortProp: "published_date", sortType: "asc" },
-            { id: 3, title: "Title - Desc", sortProp: "title", sortType: "desc" },
-            { id: 4, title: "Title - Asc", sortProp: "title", sortType: "asc" },
-            { id: 5, title: "Dummy - Dummy", sortProp: "Dummy", sortType: "Dummy" }
-          ]
-        };
-      }
+      propsData: { posts }
     });
   });
 
@@ -34,7 +22,7 @@ describe("@/components/Layout/FilterBox.vue", () => {
 
     expect(wrapper.find("#FilterBoxSelect").exists()).toBe(true);
 
-    expect(wrapper.findAll("select#FilterBoxSelect > option").length).toBe(5);
+    expect(wrapper.findAll("select#FilterBoxSelect > option").length).toBe(4);
   });
 
   it("lists the posts in the correct order by date", async () => {
